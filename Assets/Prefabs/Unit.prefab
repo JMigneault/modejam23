@@ -74,7 +74,7 @@ SpriteRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 0
-  m_Sprite: {fileID: 21300000, guid: af9c83d020fd769438e9a70125a1db25, type: 3}
+  m_Sprite: {fileID: 21300000, guid: 4461b82b35ca40943ab98efc761b2a60, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
   m_FlipY: 0
@@ -101,3 +101,4 @@ MonoBehaviour:
   isUnit: 1
   remainingMovement: 2
   hasActed: 0
+  board: {fileID: 0}

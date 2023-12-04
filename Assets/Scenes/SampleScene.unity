@@ -159,7 +159,7 @@ Camera:
   m_Enabled: 1
   serializedVersion: 2
   m_ClearFlags: 2
-  m_BackGroundColor: {r: 0.19215687, g: 0.3019608, b: 0.4745098, a: 0}
+  m_BackGroundColor: {r: 0.09433961, g: 0.09433961, b: 0.09433961, a: 0}
   m_projectionMatrixMode: 1
   m_GateFitMode: 2
   m_FOVAxisMode: 0
@@ -315,6 +315,30 @@ PrefabInstance:
       propertyPath: enemyPrefab
       value: 
       objectReference: {fileID: 3600260683675542730, guid: 1a9a63c07a04f5e41b3391668e268f43, type: 3}
+    - target: {fileID: 3508871191856441860, guid: a33d3e1806cdba34ebf03ddd9dacb112, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3508871191856441860, guid: a33d3e1806cdba34ebf03ddd9dacb112, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5892978581793900135, guid: a33d3e1806cdba34ebf03ddd9dacb112, type: 3}
+      propertyPath: m_Sprite
+      value: 
+      objectReference: {fileID: 21300000, guid: 7ed2902938bf67c419f88ab099098b6f, type: 3}
+    - target: {fileID: 5892978581793900135, guid: a33d3e1806cdba34ebf03ddd9dacb112, type: 3}
+      propertyPath: m_Color.b
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 5892978581793900135, guid: a33d3e1806cdba34ebf03ddd9dacb112, type: 3}
+      propertyPath: m_Color.g
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 5892978581793900135, guid: a33d3e1806cdba34ebf03ddd9dacb112, type: 3}
+      propertyPath: m_Color.r
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 8170389090865688236, guid: a33d3e1806cdba34ebf03ddd9dacb112, type: 3}
       propertyPath: m_Name
       value: GridBoard
@@ -329,7 +353,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 8191075272870601451, guid: a33d3e1806cdba34ebf03ddd9dacb112, type: 3}
       propertyPath: m_LocalPosition.y
-      value: 0
+      value: -0.37
       objectReference: {fileID: 0}
     - target: {fileID: 8191075272870601451, guid: a33d3e1806cdba34ebf03ddd9dacb112, type: 3}
       propertyPath: m_LocalPosition.z
