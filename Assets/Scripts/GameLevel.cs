@@ -8,6 +8,7 @@ public class GameLevel : MonoBehaviour
   public int width;
   public int height;
 
+  public Unit lastMoved;
   public Unit selectedUnit;
 
   // TODO: used electrocute??
@@ -43,6 +44,10 @@ public class GameLevel : MonoBehaviour
       if (path != null) {
         selectedUnit.remainingMovement -= selectedUnit.coords.DistanceTo(coords);
         GridBoard.instance.Move(selectedUnit.coords, coords);
+        if (lastMoved && lastMoved != selectedUnit) {
+          lastMoved.DoAbility(ABILITY.NONE);
+        }
+        lastMoved = selectedUnit;
       } else {
         SwitchSelection(null);
       }

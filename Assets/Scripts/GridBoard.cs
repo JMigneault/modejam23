@@ -57,11 +57,6 @@ public class GridBoard : MonoBehaviour
     return GetEntity(coords) != null;
   }
 
-  public bool IsCoordBlocked(GridCoords coords) {
-    GridEntity e = GetEntity(coords);
-    return e != null && e.isEnemy;
-  }
-
   Vector3 LocalTopLeft() {
     return new Vector3(-entities.GetLength(0) * gridSize * 0.5f, 
                        entities.GetLength(1) * gridSize * 0.5f);
@@ -113,7 +108,7 @@ public class GridBoard : MonoBehaviour
     if (dist == 2) {
       if (start.IsOrthogonal(end)) {
         GridCoords middle = start.Go(start.DirectionTo(end));
-        return IsCoordBlocked(middle) ? null : new List<GridCoords>(){start, middle, end} ;
+        return IsCoordOccupied(middle) ? null : new List<GridCoords>(){start, middle, end} ;
       } else {
         // diagonal
         GridCoords middle1 = null;
@@ -141,11 +136,11 @@ public class GridBoard : MonoBehaviour
             return null;
         }
 
-        if (!IsCoordBlocked(middle1)) {
+        if (!IsCoordOccupied(middle1)) {
           return new List<GridCoords>(){start, middle1, end};
         }
 
-        if (!IsCoordBlocked(middle2)) {
+        if (!IsCoordOccupied(middle2)) {
           return new List<GridCoords>(){start, middle2, end};
         }
 

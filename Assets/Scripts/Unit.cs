@@ -42,6 +42,9 @@ public class Unit : GridEntity
         // TODO: NYI
         success = false;
         break;
+      case ABILITY.NONE:
+        success = true; // we moved two units in a row, the first uses a dummy 'NONE' ability
+        break;
     }
 
     hasActed = success;

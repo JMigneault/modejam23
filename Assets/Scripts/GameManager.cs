@@ -27,6 +27,7 @@ public class GameManager : MonoBehaviour
   public void ResetLevel() {
     // TODO: TEMP
     GameObject.Destroy(currentLvl.gameObject);
+    lvlLoader.Init("protov1");
     currentLvl = lvlLoader.LoadLevel(0, levelPrefab, levelParent);
   }
 }
