@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using System;
+using TMPro;
 
 public class GameLevel : MonoBehaviour
 {
@@ -15,6 +16,12 @@ public class GameLevel : MonoBehaviour
   public bool usedRotate = false;
   public bool usedMagnetize = false;
   public bool usedSpawn = false;
+
+  private TMP_Text levelText = null;
+
+  void Awake() {
+    levelText = GetComponentInChildren<TMP_Text>();
+  }
 
   // -- Game Actions.
 
@@ -70,17 +77,26 @@ public class GameLevel : MonoBehaviour
         case ABILITY.ROTATE:
           if (!usedRotate) {
             usedRotate = selectedUnit.DoAbility(ability);
+            if (usedRotate && lastMoved != null && lastMoved != selectedUnit) {
+              lastMoved.DoAbility(ABILITY.NONE); // TODO: let's replace this stuff at some point (bitflag?)
+            }
           }
           break;
         case ABILITY.MAGNETIZE:
           if (!usedMagnetize) {
             usedMagnetize = selectedUnit.DoAbility(ability);
+            if (usedMagnetize && lastMoved != null && lastMoved != selectedUnit) {
+              lastMoved.DoAbility(ABILITY.NONE);
+            }
           }
           break;
         case ABILITY.HSPAWN:
         case ABILITY.VSPAWN:
           if (!usedSpawn) {
             usedSpawn = selectedUnit.DoAbility(ability);
+            if (usedSpawn && lastMoved != null && lastMoved != selectedUnit) {
+              lastMoved.DoAbility(ABILITY.NONE);
+            }
           }
           break;
         case ABILITY.ELECTROCUTE:
@@ -114,6 +130,8 @@ public class GameLevel : MonoBehaviour
   }
 
   public void InitFrom(byte[] template, string fileName) {
+
+    levelText.text = fileName;
 
     // ----- Parse the template.
 

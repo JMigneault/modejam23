@@ -10,6 +10,10 @@ public class GameManager : MonoBehaviour
   public Transform levelParent;
   public Transform levelPrefab;
 
+  public string levelSet = "protov1";
+
+  int currentLevel = 0;
+
   // Singleton
   public static GameManager instance;
   void Awake() {
@@ -17,17 +21,31 @@ public class GameManager : MonoBehaviour
   }
 
   void Start() {
-    lvlLoader = new LevelLoader("protov1");
-    List<GameLevel> levels = new List<GameLevel>(); // TODO not used
-
-    // TODO temp
-    currentLvl = lvlLoader.LoadLevel(0, levelPrefab, levelParent);
+    lvlLoader = new LevelLoader();
+    lvlLoader.Init(levelSet);
+    ReloadLevel();
   }
 
-  public void ResetLevel() {
-    // TODO: TEMP
-    GameObject.Destroy(currentLvl.gameObject);
-    lvlLoader.Init("protov1");
-    currentLvl = lvlLoader.LoadLevel(0, levelPrefab, levelParent);
+  public void ReloadLevel() {
+    if (currentLvl != null) {
+      GameObject.Destroy(currentLvl.gameObject);
+    }
+    currentLvl = lvlLoader.LoadLevel(currentLevel, levelPrefab, levelParent);
+  }
+
+  public void LoadNextLevel() {
+    lvlLoader.Init(levelSet);
+    if (currentLevel < lvlLoader.GetNumLevels() - 1) {
+      currentLevel++;
+    }
+    ReloadLevel();
+  }
+
+  public void LoadPrevLevel() {
+    lvlLoader.Init(levelSet);
+    if (currentLevel > 0) {
+      currentLevel--;
+    }
+    ReloadLevel();
   }
 }
