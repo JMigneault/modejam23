@@ -8,6 +8,87 @@ public class GameLevel : MonoBehaviour
   public int width;
   public int height;
 
+  public Unit selectedUnit;
+
+  // TODO: used electrocute??
+  public bool usedRotate = false;
+  public bool usedMagnetize = false;
+  public bool usedSpawn = false;
+
+  // -- Game Actions.
+
+  // Expects a valid tile.
+  public void ClickTile(GridCoords coords) {
+    if (selectedUnit != null && selectedUnit.coords.Equals(coords)) {
+      // deselect
+      SwitchSelection(null);
+      return;
+    }
+
+    // try to select a unit
+    GridEntity entity = GridBoard.instance.GetEntity(coords);
+    if (entity != null && entity.isUnit) {
+      Unit unit = (Unit) entity;
+      if (!unit.hasActed) {
+        SwitchSelection(unit);
+      }
+      // TODO: right now you can't select units with no action remaining
+      return;
+    }
+
+    if (selectedUnit != null) {
+      // try to move
+      List<GridCoords> path = GridBoard.instance.FindPath(selectedUnit.coords, coords, 
+                                                          selectedUnit.remainingMovement);
+      if (path != null) {
+        selectedUnit.remainingMovement -= selectedUnit.coords.DistanceTo(coords);
+        GridBoard.instance.Move(selectedUnit.coords, coords);
+      } else {
+        SwitchSelection(null);
+      }
+    }
+  }
+
+  void SwitchSelection(Unit newSelection) {
+    if (selectedUnit != null) {
+      selectedUnit.SetSelected(false);
+    }
+    if (newSelection != null) {
+      newSelection.SetSelected(true);
+    }
+    selectedUnit = newSelection;
+  }
+
+  public void DoAbility(ABILITY ability) {
+    if (selectedUnit != null) {
+      switch (ability) {
+        case ABILITY.ROTATE:
+          if (!usedRotate) {
+            usedRotate = selectedUnit.DoAbility(ability);
+          }
+          break;
+        case ABILITY.MAGNETIZE:
+          if (!usedMagnetize) {
+            usedMagnetize = selectedUnit.DoAbility(ability);
+          }
+          break;
+        case ABILITY.HSPAWN:
+        case ABILITY.VSPAWN:
+          if (!usedSpawn) {
+            usedSpawn = selectedUnit.DoAbility(ability);
+          }
+          break;
+        case ABILITY.ELECTROCUTE:
+          // TODO: NYI
+          break;
+        default:
+          Debug.LogError("Did not recognize requested ability");
+          break;
+      }
+    }
+  }
+
+  // -- Level setup.
   // Returns if parsing succeeded.
   bool ParseHeader(byte[] template) {
     if (template[0] != (char)'B') return false;

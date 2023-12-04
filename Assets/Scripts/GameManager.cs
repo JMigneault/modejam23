@@ -10,11 +10,23 @@ public class GameManager : MonoBehaviour
   public Transform levelParent;
   public Transform levelPrefab;
 
+  // Singleton
+  public static GameManager instance;
+  void Awake() {
+    instance = this;
+  }
+
   void Start() {
     lvlLoader = new LevelLoader("protov1");
-    List<GameLevel> levels = new List<GameLevel>();
+    List<GameLevel> levels = new List<GameLevel>(); // TODO not used
 
     // TODO temp
+    currentLvl = lvlLoader.LoadLevel(0, levelPrefab, levelParent);
+  }
+
+  public void ResetLevel() {
+    // TODO: TEMP
+    GameObject.Destroy(currentLvl.gameObject);
     currentLvl = lvlLoader.LoadLevel(0, levelPrefab, levelParent);
   }
 }
