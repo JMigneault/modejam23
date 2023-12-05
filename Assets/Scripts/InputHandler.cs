@@ -29,6 +29,9 @@ public class InputHandler : MonoBehaviour
       GameManager.instance.currentLvl.DoAbility(ABILITY.ROTATE);
     } else if (Input.GetKeyDown(KeyCode.M)) {
       GameManager.instance.currentLvl.DoAbility(ABILITY.MAGNETIZE);
+    } else if (Input.GetKeyDown(KeyCode.E)) {
+      Debug.Log("im e");
+      GameManager.instance.currentLvl.DoAbility(ABILITY.ELECTROCUTE);
     }
 
     if (Input.GetKeyDown(KeyCode.Space)) {

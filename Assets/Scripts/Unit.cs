@@ -39,9 +39,9 @@ public class Unit : GridEntity
         success = DoSpawn(true);
         break;
       case ABILITY.ELECTROCUTE:
-        // TODO: NYI
-        success = false;
-        break;
+        Debug.Log("doin");
+        success = DoElectrocute();
+        return success; // we're probably deleted here, let's get out asap.
       case ABILITY.NONE:
         success = true; // we moved two units in a row, the first uses a dummy 'NONE' ability
         break;
@@ -149,4 +149,44 @@ public class Unit : GridEntity
     board.InitTile(target2, TILE.ENEMY);
     return true;
   }
+
+  bool DoElectrocute() {
+    Debug.Log("electrowoo");
+    // Do BFS of connected entities. Win if every essential entity is hit.
+    Queue<GridCoords> queue = new Queue<GridCoords>();
+    isElectrocuted = true;
+    queue.Enqueue(coords);
+
+    while (queue.Count > 0) {
+      // Check each orthogonal direction.
+      GridCoords gc = queue.Dequeue();
+      ElectrocuteNeighbor(gc.Up(), queue);
+      ElectrocuteNeighbor(gc.Right(), queue);
+      ElectrocuteNeighbor(gc.Down(), queue);
+      ElectrocuteNeighbor(gc.Left(), queue);
+    }
+
+    // Check if all are electrocuted.
+    for (int i = 0; i < board.Width(); i++) {
+      for (int j = 0; j < board.Height(); j++) {
+        GridEntity e = board.GetEntity(new GridCoords(i, j));
+        if (e != null && e.isConductive && !e.isElectrocuted) {
+          GameManager.instance.FailLevel();
+          return true;
+        }
+      }
+    }
+
+    GameManager.instance.BeatLevel();
+    return true;
+  }
+
+  void ElectrocuteNeighbor(GridCoords neighborCoords, Queue<GridCoords> queue) {
+    GridEntity neighbor = board.GetEntity(neighborCoords);
+    if (neighbor != null && neighbor.isConductive && !neighbor.isElectrocuted) {
+      neighbor.isElectrocuted = true;
+      queue.Enqueue(neighborCoords);
+    }
+  }
+
 }

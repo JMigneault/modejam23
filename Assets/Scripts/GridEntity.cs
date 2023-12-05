@@ -6,6 +6,8 @@ public class GridEntity : MonoBehaviour
 {
   public bool isEnemy;
   public bool isUnit; // 'unit' refers to the four controllable entities
+  public bool isConductive = true; // must be electrified; can conduct
+  public bool isElectrocuted = false;
 
   public GridCoords coords;
 

@@ -100,7 +100,7 @@ public class GameLevel : MonoBehaviour
           }
           break;
         case ABILITY.ELECTROCUTE:
-          // TODO: NYI
+          selectedUnit.DoAbility(ability);
           break;
         default:
           Debug.LogError("Did not recognize requested ability");

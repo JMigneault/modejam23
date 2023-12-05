@@ -48,4 +48,13 @@ public class GameManager : MonoBehaviour
     }
     ReloadLevel();
   }
+
+  public void FailLevel() {
+    ReloadLevel();
+  }
+
+  public void BeatLevel() {
+    LoadNextLevel();
+  }
+
 }
