@@ -223,7 +223,7 @@ public class GameLevel : MonoBehaviour
       col++;
     }
 
-    if (row < height) {
+    if (row < height && !((row == height - 1) && col == width)) {
       Debug.LogError("Failed to parse level file " + fileName 
                       + " because there were only " + row + " complete rows instead of the expected " + height); 
       return;
