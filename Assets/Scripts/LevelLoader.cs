@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
+// TODO: does this class need to exist? it doesn't even do the loading bit?!?!?
 public class LevelLoader
 {
   public List<TextAsset> levelTexts;

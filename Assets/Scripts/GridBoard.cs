@@ -7,6 +7,7 @@ public class GridBoard : MonoBehaviour
 
   public GameObject unitPrefab;
   public GameObject enemyPrefab;
+  public GameObject treePrefab;
 
   public float gridSize = 1.0f;
 
@@ -186,6 +187,9 @@ public class GridBoard : MonoBehaviour
     }
     if (t == TILE.UNIT) {
       ent = GameObject.Instantiate(unitPrefab, this.transform).GetComponent<GridEntity>();
+    }
+    if (t == TILE.TREE) {
+      ent = GameObject.Instantiate(treePrefab, this.transform).GetComponent<GridEntity>();
     }
 
     SetEntity(coords, ent);

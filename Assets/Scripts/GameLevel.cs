@@ -12,10 +12,7 @@ public class GameLevel : MonoBehaviour
   public Unit lastMoved;
   public Unit selectedUnit;
 
-  // TODO: used electrocute??
-  public bool usedRotate = false;
-  public bool usedMagnetize = false;
-  public bool usedSpawn = false;
+  AbilityUsage abilities;
 
   private TMP_Text levelText = null;
 
@@ -51,9 +48,6 @@ public class GameLevel : MonoBehaviour
       if (path != null) {
         selectedUnit.remainingMovement -= selectedUnit.coords.DistanceTo(coords);
         GridBoard.instance.Move(selectedUnit.coords, coords);
-        if (lastMoved && lastMoved != selectedUnit) {
-          lastMoved.DoAbility(ABILITY.NONE);
-        }
         lastMoved = selectedUnit;
       } else {
         SwitchSelection(null);
@@ -72,60 +66,87 @@ public class GameLevel : MonoBehaviour
   }
 
   public void DoAbility(ABILITY ability) {
-    if (selectedUnit != null) {
-      switch (ability) {
-        case ABILITY.ROTATE:
-          if (!usedRotate) {
-            usedRotate = selectedUnit.DoAbility(ability);
-            if (usedRotate && lastMoved != null && lastMoved != selectedUnit) {
-              lastMoved.DoAbility(ABILITY.NONE); // TODO: let's replace this stuff at some point (bitflag?)
-            }
-          }
-          break;
-        case ABILITY.MAGNETIZE:
-          if (!usedMagnetize) {
-            usedMagnetize = selectedUnit.DoAbility(ability);
-            if (usedMagnetize && lastMoved != null && lastMoved != selectedUnit) {
-              lastMoved.DoAbility(ABILITY.NONE);
-            }
-          }
-          break;
-        case ABILITY.HSPAWN:
-        case ABILITY.VSPAWN:
-          if (!usedSpawn) {
-            usedSpawn = selectedUnit.DoAbility(ability);
-            if (usedSpawn && lastMoved != null && lastMoved != selectedUnit) {
-              lastMoved.DoAbility(ABILITY.NONE);
-            }
-          }
-          break;
-        case ABILITY.ELECTROCUTE:
-          selectedUnit.DoAbility(ability);
-          break;
-        default:
-          Debug.LogError("Did not recognize requested ability");
-          break;
+    if (selectedUnit != null && abilities.IsAvailable(ability)) {
+      bool used = selectedUnit.DoAbility(ability);
+      if (used) {
+        abilities.Use(ability);
       }
     }
   }
 
   // -- Level setup.
   // Returns if parsing succeeded.
-  bool ParseHeader(byte[] template) {
+  bool ParseHeader(byte[] template, int length) {
+    if (template.Length < 3) {
+      Debug.LogError("Header length is less than 3 bytes!");
+      return false;
+    }
+
     if (template[0] != (char)'B') return false;
     if (template[1] != (char)'M') return false;
     int version;
     Int32.TryParse("" + (char) template[2], out version);
-    if (version != 1) {
-      Debug.LogError("We only support level file version 1 but failed to parse version or got version " + version);
+    if (version < 1 || 2 < version) {
+      Debug.LogError("We only support level file versions 1 and 2 but failed to parse version or got version " + version);
       return false;
     }
+
+    int minLen = 7;
+    int maxLen = (version == 1) ? 7 : 11;
+    if (length < minLen || length > maxLen) {
+      Debug.LogError("Header of size " + length + " is the wrong length.");
+      return false;
+    }
+
     string widthStr = ("" + (char)template[3]) + (char)template[4];
     Int32.TryParse(widthStr, out width);
     if (width == 0) return false;
     string heightStr = ("" + (char)template[5]) + (char)template[6];
     Int32.TryParse(widthStr, out height);
     if (height == 0) return false;
+
+    if (version == 2) {
+      // Parse available abilities
+      List<ABILITY> abs = new List<ABILITY>();
+      for (int i = 7; i < length; i++) {
+        ABILITY a;
+        switch ((char)template[i]) {
+          case 'M':
+            a = ABILITY.MAGNETIZE;
+            break;
+          case 'O':
+            a = ABILITY.ROTATE;
+            break;
+          case 'D':
+            a = ABILITY.SPAWN;
+            abs.Add(ABILITY.VSPAWN); // TODO: temp
+            break;
+          case 'E':
+            a = ABILITY.ELECTROCUTE;
+            break;
+          default:
+            Debug.LogError("Invalid ability code specified: " + (char)template[i]);
+            return false;
+        }
+
+        if (abs.Contains(a)) {
+          Debug.LogError("Found a duplicate ability code: " + (char)template[i]);
+          return false;
+        }
+
+        abs.Add(a);
+      }
+
+      if (!abs.Contains(ABILITY.ELECTROCUTE)) {
+        Debug.LogError("E ability code not specified :'(");
+        return false;
+      }
+
+      abilities = new AbilityUsage(abs);
+    } else {
+      abilities = new AbilityUsage();
+    }
+
     return true;
   }
 
@@ -147,11 +168,14 @@ public class GameLevel : MonoBehaviour
     // - third byte is the version number (always 1 for now)
     // - fourth and fifth bytes are the width of the level grid
     // - sixth and seventh bytes are the height of the level grid 
-    int headerLength = 7;
 
-    if (template.Length < headerLength) {
-      Debug.LogError("Failed to parse level file " + fileName + " because the file was too short for the header.");
-      return;
+    // Read the header.
+    int headerLength = 0;
+    {
+      while (headerLength < template.Length && template[headerLength] != '\n' && template[headerLength] != '\r') {
+        headerLength++;
+      }
+
     }
 
     int off = headerLength + 1;
@@ -159,13 +183,7 @@ public class GameLevel : MonoBehaviour
       off++; // Windows :)
     }
 
-    if (template[off-1] != '\n') {
-      Debug.Log(template[off-1]);
-      Debug.LogError("Failed to parse level file " + fileName + " because the header was the incorrect size.");
-      return;
-    }
-
-    bool valid = ParseHeader(template);
+    bool valid = ParseHeader(template, headerLength);
 
     if (!valid) {
       Debug.LogError("Failed to parse level file " + fileName + " because the header was invalid.");
@@ -207,6 +225,9 @@ public class GameLevel : MonoBehaviour
           break;
         case 'C':
           GridBoard.instance.InitTile(gc, TILE.UNIT);
+          break;
+        case 'T':
+          GridBoard.instance.InitTile(gc, TILE.TREE);
           break;
         default:
           Debug.LogError("Failed to parse level file " + fileName 

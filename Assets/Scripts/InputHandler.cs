@@ -21,10 +21,9 @@ public class InputHandler : MonoBehaviour
 
     // EXTREMELY TEMP CONTROLS TODO
     if (Input.GetKeyDown(KeyCode.H)) {
-      GameManager.instance.currentLvl.DoAbility(ABILITY.HSPAWN);
+      GameManager.instance.currentLvl.DoAbility(ABILITY.SPAWN);
     } else if (Input.GetKeyDown(KeyCode.V)) {
       GameManager.instance.currentLvl.DoAbility(ABILITY.VSPAWN);
-       
     } else if (Input.GetKeyDown(KeyCode.D)) {
       GameManager.instance.currentLvl.DoAbility(ABILITY.ROTATE);
     } else if (Input.GetKeyDown(KeyCode.M)) {

@@ -32,7 +32,7 @@ public class Unit : GridEntity
       case ABILITY.MAGNETIZE:
         success = DoMagnetize();
         break;
-      case ABILITY.HSPAWN:
+      case ABILITY.SPAWN:
         success = DoSpawn(false);
         break;
       case ABILITY.VSPAWN:
@@ -42,9 +42,6 @@ public class Unit : GridEntity
         Debug.Log("doin");
         success = DoElectrocute();
         return success; // we're probably deleted here, let's get out asap.
-      case ABILITY.NONE:
-        success = true; // we moved two units in a row, the first uses a dummy 'NONE' ability
-        break;
     }
 
     hasActed = success;

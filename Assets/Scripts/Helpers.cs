@@ -103,6 +103,31 @@ public class GridCoords
   }
 }
 
+public class AbilityUsage {
+  
+  public bool[] available;
+  
+  public AbilityUsage() {
+    available = new bool[5] { true, true, true, true, true };
+  }
+
+  public AbilityUsage(List<ABILITY> allowed) {
+    available = new bool[5] { false, false, false, false, false };
+    for (int i = 0; i < allowed.Count; i++) {
+      available[(int)allowed[i]] = true;
+    }
+  }
+
+  public bool IsAvailable(ABILITY a) {
+    return available[(int)a];
+  }
+  
+  public void Use(ABILITY a) {
+    available[(int)a] = false;
+  }
+}
+
+
 public enum DIR {NONE, LEFT, RIGHT, UP, DOWN, DIAGUR, DIAGUL, DIAGDR, DIAGDL}
-public enum TILE {EMPTY, ENEMY, UNIT};
-public enum ABILITY {ROTATE, HSPAWN, VSPAWN, MAGNETIZE, ELECTROCUTE, NONE /* TODO: is NONE too hacky? */ };
+public enum TILE {EMPTY, ENEMY, UNIT, TREE}
+public enum ABILITY {ROTATE = 0, SPAWN, VSPAWN, MAGNETIZE, ELECTROCUTE} // TODO: delete VSPAWN
