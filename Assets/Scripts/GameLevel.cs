@@ -9,8 +9,8 @@ public class GameLevel : MonoBehaviour
   public int width;
   public int height;
 
-  public Unit lastMoved;
   public Unit selectedUnit;
+  GridCoords startingCoords;
 
   AbilityUsage abilities;
 
@@ -24,20 +24,27 @@ public class GameLevel : MonoBehaviour
 
   // Expects a valid tile.
   public void ClickTile(GridCoords coords) {
-    if (selectedUnit != null && selectedUnit.coords.Equals(coords)) {
-      // deselect
-      SwitchSelection(null);
-      return;
-    }
 
     // try to select a unit
     GridEntity entity = GridBoard.instance.GetEntity(coords);
+
+    if (entity != null && entity == selectedUnit) {
+      return; // already selected
+    }
+
+    bool selectedMustAct = (selectedUnit != null) && selectedUnit.hasMoved && !selectedUnit.hasActed;
+
     if (entity != null && entity.isUnit) {
+      if (selectedMustAct) {
+        // You can't select another character if you've already moved the current one.
+        InputHandler.instance.FlashButtons();
+        return;
+      }
+
       Unit unit = (Unit) entity;
       if (!unit.hasActed) {
         SwitchSelection(unit);
       }
-      // TODO: right now you can't select units with no action remaining
       return;
     }
 
@@ -47,29 +54,47 @@ public class GameLevel : MonoBehaviour
                                                           selectedUnit.remainingMovement);
       if (path != null) {
         selectedUnit.remainingMovement -= selectedUnit.coords.DistanceTo(coords);
+        selectedUnit.hasMoved = true;
         GridBoard.instance.Move(selectedUnit.coords, coords);
-        lastMoved = selectedUnit;
       } else {
+        // TODO: should you be able to deselect characters at all?
+        if (selectedMustAct) {
+          // You can't deselect the character if you've already moved it, but haven't used an ability.
+          InputHandler.instance.FlashButtons();
+          return;
+        }
         SwitchSelection(null);
       }
     }
   }
 
   void SwitchSelection(Unit newSelection) {
+    if (selectedUnit == newSelection) 
+      return; // same unit
     if (selectedUnit != null) {
       selectedUnit.SetSelected(false);
     }
     if (newSelection != null) {
       newSelection.SetSelected(true);
+      startingCoords = newSelection.coords;
     }
     selectedUnit = newSelection;
+  }
+
+  public void UndoLastMovement() {
+    if (selectedUnit != null && selectedUnit.hasMoved) {
+      GridBoard.instance.Move(selectedUnit.coords, startingCoords);
+      selectedUnit.remainingMovement = selectedUnit.totalMovement;
+      selectedUnit.hasMoved = false;
+    }
   }
 
   public void DoAbility(ABILITY ability) {
     if (selectedUnit != null && abilities.IsAvailable(ability)) {
       bool used = selectedUnit.DoAbility(ability);
       if (used) {
-        abilities.Use(ability);
+        selectedUnit = null; // deselect current unit
+        abilities.Use(ability); // track that we can't use this ability again
       }
     }
   }

@@ -4,7 +4,10 @@ using UnityEngine;
 
 public class Unit : GridEntity
 {
+  public int totalMovement = 2;
   public int remainingMovement = 2;
+  public GridCoords startingCoords = null;
+  public bool hasMoved = false;
   public bool hasActed = false;
 
   public GridBoard board = null;
@@ -39,7 +42,6 @@ public class Unit : GridEntity
         success = DoSpawn(true);
         break;
       case ABILITY.ELECTROCUTE:
-        Debug.Log("doin");
         success = DoElectrocute();
         return success; // we're probably deleted here, let's get out asap.
     }
@@ -127,7 +129,9 @@ public class Unit : GridEntity
   void MagnetizeLoop(GridCoords start, DIR primary, DIR opposite) {
     GridCoords c = start;
     while (board.IsCoordValid(c)) {
-      board.Move(c, c.Go(opposite)); // try to pull one space
+      if (!board.GetEntity(c).isTree) { // can't pull trees
+        board.Move(c, c.Go(opposite)); // try to pull one space
+      }
       c = c.Go(primary);
     }
   }
@@ -148,7 +152,6 @@ public class Unit : GridEntity
   }
 
   bool DoElectrocute() {
-    Debug.Log("electrowoo");
     // Do BFS of connected entities. Win if every essential entity is hit.
     Queue<GridCoords> queue = new Queue<GridCoords>();
     isElectrocuted = true;

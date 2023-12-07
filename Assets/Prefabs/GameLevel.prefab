@@ -138,8 +138,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: -685.14, y: -43.728577}
-  m_SizeDelta: {x: 453.6257, y: 137.4571}
+  m_AnchoredPosition: {x: 736.50854, y: 396.2796}
+  m_SizeDelta: {x: 418.6429, y: 130.8979}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &3648758372035097034
 CanvasRenderer:
@@ -287,6 +287,3 @@ MonoBehaviour:
   height: 0
   lastMoved: {fileID: 0}
   selectedUnit: {fileID: 0}
-  usedRotate: 0
-  usedMagnetize: 0
-  usedSpawn: 0

@@ -29,7 +29,6 @@ public class InputHandler : MonoBehaviour
     } else if (Input.GetKeyDown(KeyCode.M)) {
       GameManager.instance.currentLvl.DoAbility(ABILITY.MAGNETIZE);
     } else if (Input.GetKeyDown(KeyCode.E)) {
-      Debug.Log("im e");
       GameManager.instance.currentLvl.DoAbility(ABILITY.ELECTROCUTE);
     }
 
@@ -43,4 +42,34 @@ public class InputHandler : MonoBehaviour
       GameManager.instance.LoadNextLevel();
     }
   }
+
+  public void PressMagnetize() {
+    GameManager.instance.currentLvl.DoAbility(ABILITY.MAGNETIZE);
+  }
+
+  public void PressSpawn() {
+    GameManager.instance.currentLvl.DoAbility(ABILITY.SPAWN);
+  }
+
+  public void PressRotate() {
+    GameManager.instance.currentLvl.DoAbility(ABILITY.ROTATE);
+  }
+
+  public void PressElectrocute() {
+    GameManager.instance.currentLvl.DoAbility(ABILITY.ELECTROCUTE);
+  }
+
+  public void PressUndoMovement() {
+    GameManager.instance.currentLvl.UndoLastMovement();
+  }
+
+  // The player needs to use an ability. Play a flash effect to make them notice.
+  public void FlashButtons() {
+    Debug.Log("TODO: flash buttons");
+  }
+
+  public void FlashInvalidSpawn() {
+    Debug.Log("TODO: signal bad spawn");
+  }
+
 }
