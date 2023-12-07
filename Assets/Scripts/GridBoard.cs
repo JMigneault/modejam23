@@ -8,10 +8,12 @@ public class GridBoard : MonoBehaviour
   public GameObject unitPrefab;
   public GameObject enemyPrefab;
   public GameObject treePrefab;
+  public GameObject tilePrefab;
 
   public float gridSize = 1.0f;
 
   public GridEntity[,] entities;
+  public GridTile[,] tiles;
 
   // Singleton
   public static GridBoard instance = null;
@@ -30,6 +32,10 @@ public class GridBoard : MonoBehaviour
 
   public GridEntity GetEntity(GridCoords coords) {
     return IsCoordValid(coords) ? entities[coords.i, coords.j] : null;
+  }
+
+  public GridTile GetTile(GridCoords coords) {
+    return IsCoordValid(coords) ? tiles[coords.i, coords.j] : null;
   }
 
   public bool SetEntity(GridCoords coords, GridEntity entity) {
@@ -78,6 +84,51 @@ public class GridBoard : MonoBehaviour
     return new GridCoords((int)(posCoordSys.x / gridSize), (int)(posCoordSys.y / gridSize));
   }
 
+  public void UnhighlightAll() {
+    for (int i = 0; i < Width(); i++) {
+      for (int j = 0; j < Height(); j++) {
+        tiles[i, j].Unhighlight();
+      }
+    }
+  }
+
+  public void HighlightMovable(GridCoords start, int distance) {
+    if (distance > 2) {
+      Debug.LogError("Failed to HighlightMovable because a highlight distance of greater than 2 was requested.");
+      return;
+    }
+
+    UnhighlightAll();
+
+    // Because the max movement is two, we can just brute force this. A more principled movement system
+    // using BFS would be nice, but this should be good enough.
+
+    // center
+    HighlightIfAccessible(start, start, distance);
+    // distance 1
+    HighlightIfAccessible(start, start.Up(), distance);
+    HighlightIfAccessible(start, start.Right(), distance);
+    HighlightIfAccessible(start, start.Down(), distance);
+    HighlightIfAccessible(start, start.Left(), distance);
+    // distance 2, orthogonal
+    HighlightIfAccessible(start, start.Up().Up(), distance);
+    HighlightIfAccessible(start, start.Right().Right(), distance);
+    HighlightIfAccessible(start, start.Down().Down(), distance);
+    HighlightIfAccessible(start, start.Left().Left(), distance);
+    // distance 2, diagonal
+    HighlightIfAccessible(start, start.Go(DIR.DIAGUL), distance);
+    HighlightIfAccessible(start, start.Go(DIR.DIAGUR), distance);
+    HighlightIfAccessible(start, start.Go(DIR.DIAGDR), distance);
+    HighlightIfAccessible(start, start.Go(DIR.DIAGDL), distance);
+  }
+
+  public void HighlightIfAccessible(GridCoords start, GridCoords target, int distance) {
+    bool accessible = FindPath(start, target, distance) != null;
+    if (accessible) {
+      GetTile(target).Highlight();
+    }
+  }
+
   // Returns a list of the path (including start and end) or returns null if no path exists.
   public List<GridCoords> FindPath(GridCoords start, GridCoords end, int maxDistance) {
     if (maxDistance > 2) {
@@ -91,11 +142,10 @@ public class GridBoard : MonoBehaviour
     }
 
     if (!IsCoordValid(end)) {
-      Debug.LogError("Failed to FindPath because the ending coord was not valid");
-      return null;
+      return null; // trying to find a path off the map
     }
 
-    if (IsCoordOccupied(end)) {
+    if (IsCoordOccupied(end) && !start.Equals(end)) {
       return null; // something is already there
     }
 
@@ -170,17 +220,29 @@ public class GridBoard : MonoBehaviour
 
   // Initialization.
   public void InitBoard(int width, int height) {
-    if (entities != null) {
-      for (int i = 0; i < entities.GetLength(0); i++) {
-        for (int j = 0; j < entities.GetLength(1); j++) {
-          if (entities[i, j] != null) {
-            GameObject.Destroy(entities[i, j].gameObject);
-            entities[i, j] = null;
-          }
+    if (tiles == null) {
+      tiles = new GridTile[width, height];
+    }
+    if (entities == null) {
+      entities = new GridEntity[width, height];
+    }
+
+    for (int i = 0; i < entities.GetLength(0); i++) {
+      for (int j = 0; j < entities.GetLength(1); j++) {
+        // Tiles (TODO: improve with better assets)
+        if (tiles[i, j] != null) {
+          GameObject.Destroy(tiles[i, j].gameObject);
+        }
+        tiles[i, j] = GameObject.Instantiate(tilePrefab, this.transform).GetComponent<GridTile>();
+        tiles[i, j].transform.localPosition = GridBoard.instance.GetLocalPos(new GridCoords(i, j));
+
+        // Entities
+        if (entities[i, j] != null) {
+          GameObject.Destroy(entities[i, j].gameObject);
+          entities[i, j] = null;
         }
       }
     }
-    entities = new GridEntity[width, height];
   }
 
   // NOTE: also used by Unit spawning ability code to create entities.

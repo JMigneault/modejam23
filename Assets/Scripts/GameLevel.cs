@@ -53,9 +53,7 @@ public class GameLevel : MonoBehaviour
       List<GridCoords> path = GridBoard.instance.FindPath(selectedUnit.coords, coords, 
                                                           selectedUnit.remainingMovement);
       if (path != null) {
-        selectedUnit.remainingMovement -= selectedUnit.coords.DistanceTo(coords);
-        selectedUnit.hasMoved = true;
-        GridBoard.instance.Move(selectedUnit.coords, coords);
+        MoveSelected(coords);
       } else {
         // TODO: should you be able to deselect characters at all?
         if (selectedMustAct) {
@@ -79,6 +77,7 @@ public class GameLevel : MonoBehaviour
       startingCoords = newSelection.coords;
     }
     selectedUnit = newSelection;
+    HighlightMovable();
   }
 
   public void UndoLastMovement() {
@@ -86,14 +85,30 @@ public class GameLevel : MonoBehaviour
       GridBoard.instance.Move(selectedUnit.coords, startingCoords);
       selectedUnit.remainingMovement = selectedUnit.totalMovement;
       selectedUnit.hasMoved = false;
+      HighlightMovable();
     }
+  }
+
+  public void HighlightMovable() {
+    if (selectedUnit == null) {
+      GridBoard.instance.UnhighlightAll();
+    } else {
+      GridBoard.instance.HighlightMovable(selectedUnit.coords, selectedUnit.remainingMovement);
+    }
+  }
+
+  public void MoveSelected(GridCoords coords) {
+    selectedUnit.remainingMovement -= selectedUnit.coords.DistanceTo(coords);
+    selectedUnit.hasMoved = true;
+    GridBoard.instance.Move(selectedUnit.coords, coords);
+    HighlightMovable();
   }
 
   public void DoAbility(ABILITY ability) {
     if (selectedUnit != null && abilities.IsAvailable(ability)) {
       bool used = selectedUnit.DoAbility(ability);
       if (used) {
-        selectedUnit = null; // deselect current unit
+        SwitchSelection(null); // deselect current unit
         abilities.Use(ability); // track that we can't use this ability again
       }
     }
