@@ -129,7 +129,8 @@ public class Unit : GridEntity
   void MagnetizeLoop(GridCoords start, DIR primary, DIR opposite) {
     GridCoords c = start;
     while (board.IsCoordValid(c)) {
-      if (!board.GetEntity(c).isTree) { // can't pull trees
+      GridEntity e = board.GetEntity(c);
+      if (e == null || !e.isTree) { // can't pull trees
         board.Move(c, c.Go(opposite)); // try to pull one space
       }
       c = c.Go(primary);
