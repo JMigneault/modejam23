@@ -58,6 +58,11 @@ public class GridBoard : MonoBehaviour
     return GetEntity(coords) != null;
   }
 
+  public bool IsCoordTree(GridCoords coords) {
+    GridEntity e = GetEntity(coords);
+    return e != null && e.isTree;
+  }
+
   Vector3 LocalTopLeft() {
     return new Vector3(-entities.GetLength(0) * gridSize * 0.5f, 
                        entities.GetLength(1) * gridSize * 0.5f);
@@ -157,6 +162,7 @@ public class GridBoard : MonoBehaviour
   public bool Move(GridCoords source, GridCoords dest) {
     if (!IsCoordValid(source)) return false;
     if (IsCoordOccupied(dest)) return false;
+    if (IsCoordTree(source)) return false; // trees don't move
     SetEntity(dest, GetEntity(source));
     SetEntity(source, null);
     return true;

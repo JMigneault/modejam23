@@ -71,13 +71,22 @@ public class Unit : GridEntity
                              coords.Go(DIR.DIAGDR), 
                              coords.Right(), 
                              coords.Go(DIR.DIAGUR)};
+    int startingPoint = 1; // 1 is the default for if we're not next to a wall
 
-    bool againstWall = board.IsBoundaryCoord(coords);
+    bool againstBorder = board.IsBoundaryCoord(coords);
+
+    // Go through the sequence of neighbors to figure out if we border a tree.
+    bool againstTree = false;
+    for (int i = 0; i < sequence.Length; i++) {
+      if (board.IsCoordTree(sequence[i])) {
+        againstTree = true;
+        startingPoint = i; // we should start the sequence by trying to rotate this tree
+      }
+    }
 
     GridEntity setAside = null;
-    int startingPoint = 1;
-    if (againstWall) {
-      // Starting point can be anywhere in the wall.
+    if (againstBorder) {
+      // Starting point must be somewhere in the wall.
       if (coords.i == 0) {
         startingPoint = 2; // start left
       } else if (coords.i == board.Width() - 1) {
@@ -87,7 +96,10 @@ public class Unit : GridEntity
       } else if (coords.j == board.Width() - 1) {
         startingPoint = 4; // start down
       }
-    } else {
+    } 
+
+    bool allNeighborsMovable = !againstBorder && !againstTree;
+    if (allNeighborsMovable) {
       // Set aside the entity right above us.
       setAside = board.GetEntity(coords.Up());
       board.SetEntity(coords.Up(), null);
@@ -107,7 +119,7 @@ public class Unit : GridEntity
       }
     }
 
-    if (!againstWall) {
+    if (allNeighborsMovable) {
       // Restore the entity we set aside.
       board.SetEntity(coords.Go(DIR.DIAGUR), setAside);
     }
@@ -129,10 +141,7 @@ public class Unit : GridEntity
   void MagnetizeLoop(GridCoords start, DIR primary, DIR opposite) {
     GridCoords c = start;
     while (board.IsCoordValid(c)) {
-      GridEntity e = board.GetEntity(c);
-      if (e == null || !e.isTree) { // can't pull trees
-        board.Move(c, c.Go(opposite)); // try to pull one space
-      }
+      board.Move(c, c.Go(opposite)); // try to pull one space
       c = c.Go(primary);
     }
   }
