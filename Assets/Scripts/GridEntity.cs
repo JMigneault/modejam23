@@ -12,8 +12,17 @@ public class GridEntity : MonoBehaviour
 
   public GridCoords coords;
 
-  public void SetCoords(GridCoords coords) {
+  public void SetCoords(GridCoords coords, float speed) {
     this.coords = coords;
-    this.transform.localPosition = GridBoard.instance.GetLocalPos(coords);
+    StartCoroutine(MoveTo(coords, speed));
+  }
+
+  public IEnumerator MoveTo(GridCoords coords, float speed) {
+    Vector3 target = GridBoard.instance.GetLocalPos(coords);
+
+    while ((target - transform.localPosition).magnitude > Mathf.Epsilon) {
+      transform.localPosition = Vector3.MoveTowards(transform.localPosition, target, speed * Time.deltaTime);
+      yield return null;
+    }
   }
 }

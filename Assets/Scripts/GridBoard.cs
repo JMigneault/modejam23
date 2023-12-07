@@ -38,13 +38,13 @@ public class GridBoard : MonoBehaviour
     return IsCoordValid(coords) ? tiles[coords.i, coords.j] : null;
   }
 
-  public bool SetEntity(GridCoords coords, GridEntity entity) {
+  public bool SetEntity(GridCoords coords, GridEntity entity, float speed) {
     if (!IsCoordValid(coords)) {
       return false;
     }
 
     if (entity != null) {
-      entity.SetCoords(coords);
+      entity.SetCoords(coords, speed);
     }
     entities[coords.i, coords.j] = entity;
     return true;
@@ -209,12 +209,13 @@ public class GridBoard : MonoBehaviour
   }
 
   // Returns whether the move succeeded.
-  public bool Move(GridCoords source, GridCoords dest) {
+  public bool Move(GridCoords source, GridCoords dest, float speed = 10.0f) {
     if (!IsCoordValid(source)) return false;
     if (IsCoordOccupied(dest)) return false;
     if (IsCoordTree(source)) return false; // trees don't move
-    SetEntity(dest, GetEntity(source));
-    SetEntity(source, null);
+    SetEntity(dest, GetEntity(source), speed);
+    SetEntity(source, null, 0);
+
     return true;
   }
 
@@ -260,6 +261,6 @@ public class GridBoard : MonoBehaviour
       ent = GameObject.Instantiate(treePrefab, this.transform).GetComponent<GridEntity>();
     }
 
-    SetEntity(coords, ent);
+    SetEntity(coords, ent, Mathf.Infinity);
   }
 }

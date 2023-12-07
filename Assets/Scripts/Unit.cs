@@ -102,7 +102,7 @@ public class Unit : GridEntity
     if (allNeighborsMovable) {
       // Set aside the entity right above us.
       setAside = board.GetEntity(coords.Up());
-      board.SetEntity(coords.Up(), null);
+      board.SetEntity(coords.Up(), null, 0);
     }
 
     // Do the actual switching, being careful to wrap around the sequence.
@@ -121,7 +121,7 @@ public class Unit : GridEntity
 
     if (allNeighborsMovable) {
       // Restore the entity we set aside.
-      board.SetEntity(coords.Go(DIR.DIAGUR), setAside);
+      board.SetEntity(coords.Go(DIR.DIAGUR), setAside, Mathf.Infinity);
     }
 
     return true;

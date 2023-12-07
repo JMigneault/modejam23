@@ -82,7 +82,7 @@ public class GameLevel : MonoBehaviour
 
   public void UndoLastMovement() {
     if (selectedUnit != null && selectedUnit.hasMoved) {
-      GridBoard.instance.Move(selectedUnit.coords, startingCoords);
+      GridBoard.instance.Move(selectedUnit.coords, startingCoords, Mathf.Infinity);
       selectedUnit.remainingMovement = selectedUnit.totalMovement;
       selectedUnit.hasMoved = false;
       HighlightMovable();
