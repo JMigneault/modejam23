@@ -20,7 +20,7 @@ public class InputHandler : MonoBehaviour
   public Sprite flashButton;
   public Image[] abilityImages;
   public Image spawnImage;
-  public float flashTime = 1.0f;
+  public float flashTime = 0.5f;
 
   void Start() {
     abilityImages = abilityButtonParent.GetComponentsInChildren<Image>();
