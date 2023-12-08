@@ -10,6 +10,7 @@ public class InputHandler : MonoBehaviour
   public static InputHandler instance;
   void Awake() {
     instance = this;
+    abilityImages = abilityButtonParent.GetComponentsInChildren<Image>();
   }
 
   // TODO: improve button code (maybe after we have assets)
@@ -21,10 +22,6 @@ public class InputHandler : MonoBehaviour
   public Image[] abilityImages;
   public Image spawnImage;
   public float flashTime = 0.5f;
-
-  void Start() {
-    abilityImages = abilityButtonParent.GetComponentsInChildren<Image>();
-  }
 
   void Update() {
     if (Input.GetMouseButtonDown(0)) { // click
@@ -59,13 +56,6 @@ public class InputHandler : MonoBehaviour
     }
   }
 
-  public void ResetUI() {
-    // beware of running coroutines.
-    foreach (Image im in abilityImages) {
-      im.sprite = unusedButton;
-    }
-  }
-
   public void PressMagnetize() {
     GameManager.instance.currentLvl.DoAbility(ABILITY.MAGNETIZE);
   }
@@ -87,6 +77,20 @@ public class InputHandler : MonoBehaviour
   }
 
   // TODO Button code is really hacky right now :(
+
+  public void ResetUI() {
+    // beware of running coroutines.
+    foreach (Image im in abilityImages) {
+      im.sprite = unusedButton;
+    }
+  }
+
+  public void InitButtons(AbilityUsage usage) {
+    for (int i = 0; i < abilityImages.Length; i++) {
+      bool available = (i == abilityImages.Length-1) || usage.IsAvailable((ABILITY) i);
+      abilityImages[i].sprite = available ? unusedButton : usedButton ;
+    }
+  }
 
   // The player needs to use an ability. Play a flash effect to make them notice.
   public void FlashButtons() {

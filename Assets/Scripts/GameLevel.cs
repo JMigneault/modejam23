@@ -111,6 +111,10 @@ public class GameLevel : MonoBehaviour
       } else {
         bool used = selectedUnit.DoAbility(ability);
         if (used) {
+          if (ability == ABILITY.ELECTROCUTE) {
+            // We've already reloaded the level. Get out quick.
+            return;
+          }
           SwitchSelection(null); // deselect current unit
           abilities.Use(ability); // track that we can't use this ability again
           InputHandler.instance.Use(ability);
@@ -243,8 +247,10 @@ public class GameLevel : MonoBehaviour
       return;
     }
 
+    // Reset.
     GridBoard.instance.InitBoard(width, height);
     InputHandler.instance.ResetUI();
+    InputHandler.instance.InitButtons(abilities);
 
     // Read the contents of the grid-board.
     int row = 0;
