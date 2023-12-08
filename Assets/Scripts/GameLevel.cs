@@ -12,7 +12,7 @@ public class GameLevel : MonoBehaviour
   public Unit selectedUnit;
   GridCoords startingCoords;
 
-  AbilityUsage abilities;
+  public AbilityUsage abilities;
 
   private TMP_Text levelText = null;
 
@@ -105,12 +105,20 @@ public class GameLevel : MonoBehaviour
   }
 
   public void DoAbility(ABILITY ability) {
-    if (selectedUnit != null && abilities.IsAvailable(ability)) {
-      bool used = selectedUnit.DoAbility(ability);
-      if (used) {
-        SwitchSelection(null); // deselect current unit
-        abilities.Use(ability); // track that we can't use this ability again
+    if (abilities.IsAvailable(ability)) {
+      if (selectedUnit == null) {
+        InputHandler.instance.Failed(ability); // TODO: should we do this?
+      } else {
+        bool used = selectedUnit.DoAbility(ability);
+        if (used) {
+          SwitchSelection(null); // deselect current unit
+          abilities.Use(ability); // track that we can't use this ability again
+          InputHandler.instance.Use(ability);
+        } else {
+          InputHandler.instance.Failed(ability);
+        }
       }
+
     }
   }
 
@@ -236,6 +244,7 @@ public class GameLevel : MonoBehaviour
     }
 
     GridBoard.instance.InitBoard(width, height);
+    InputHandler.instance.ResetUI();
 
     // Read the contents of the grid-board.
     int row = 0;
