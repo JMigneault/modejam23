@@ -285,5 +285,12 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   width: 0
   height: 0
-  lastMoved: {fileID: 0}
-  selectedUnit: {fileID: 0}
+  suitPrefab: {fileID: 2296799656177116852, guid: e3a38f473a31b60468dbff3591b8b3d4, type: 3}
+  suits: []
+  boxTop: {x: -6, y: 3, z: 0}
+  boxDist: 2
+  boxLength: 1.5
+  dragStartPos: {x: 0, y: 0, z: 0}
+  dragOffset: {x: 0, y: 0, z: 0}
+  draggingObject: {fileID: 0}
+  dragging: 0

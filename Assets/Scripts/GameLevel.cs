@@ -9,77 +9,108 @@ public class GameLevel : MonoBehaviour
   public int width;
   public int height;
 
-  public Unit selectedUnit;
   GridCoords startingCoords;
 
   public AbilityUsage abilities;
 
   private TMP_Text levelText = null;
 
+  public GameObject suitPrefab;
+  public Suit[] suits;
+  public Vector3 boxTop;
+  public float boxDist = 5.0f;
+  public float boxLength = 2.0f;
+
+  public Vector3 dragStartPos;
+  public Vector3 dragOffset;
+  public GameObject draggingObject = null;
+  public DRAG dragging = DRAG.NONE;
+
   void Awake() {
     levelText = GetComponentInChildren<TMP_Text>();
   }
 
+  public void MousePosition(Vector3 mousePos) {
+    if (dragging != DRAG.NONE) {
+      draggingObject.transform.position = mousePos + dragOffset;
+    }
+  }
+
   // -- Game Actions.
-
-  // Expects a valid tile.
-  public void ClickTile(GridCoords coords) {
-
-    // try to select a unit
-    GridEntity entity = GridBoard.instance.GetEntity(coords);
-
-    if (entity != null && entity == selectedUnit) {
-      return; // already selected
-    }
-
-    bool selectedMustAct = (selectedUnit != null) && selectedUnit.hasMoved && !selectedUnit.hasActed;
-
-    if (entity != null && entity.isUnit) {
-      if (selectedMustAct) {
-        // You can't select another character if you've already moved the current one.
-        InputHandler.instance.FlashButtons();
-        return;
-      }
-
-      Unit unit = (Unit) entity;
-      if (!unit.hasActed) {
-        SwitchSelection(unit);
-      }
-      return;
-    }
-
-    if (selectedUnit != null) {
-      // try to move
-      List<GridCoords> path = GridBoard.instance.FindPath(selectedUnit.coords, coords, 
-                                                          selectedUnit.remainingMovement);
-      if (path != null) {
-        MoveSelected(coords);
-      } else {
-        // TODO: should you be able to deselect characters at all?
-        if (selectedMustAct) {
-          // You can't deselect the character if you've already moved it, but haven't used an ability.
-          InputHandler.instance.FlashButtons();
-          return;
+  public void Release() {
+    if (dragging != DRAG.NONE) {
+      GridCoords coords = GridBoard.instance.WorldToGrid(draggingObject.transform.position);
+      if (GridBoard.instance.IsCoordValid(coords)) {
+        if (dragging == DRAG.UNIT) {
+          // Try to move the unit. e must be null.
+          Unit unit = draggingObject.GetComponent<Unit>();
+          List<GridCoords> path = GridBoard.instance.FindPath(unit.coords, coords, unit.remainingMovement);
+          if (path != null && path.Count > 1) {
+            GridBoard.instance.Move(unit.coords, coords, Mathf.Infinity);
+            unit.hasMoved = true;
+            unit.remainingMovement = 0;
+            dragging = DRAG.NONE;
+            GridBoard.instance.UnhighlightAll();
+          } else {
+            ReturnDragged();
+          }
+        } else if (dragging == DRAG.SUIT) {
+          GridEntity e = GridBoard.instance.GetEntity(coords);
+          // Try to drop the suit on a unit.
+          if (e != null && e.isUnit && !((Unit)e).hasActed) {
+            DoAbility(draggingObject.GetComponent<Suit>().ability, (Unit) e);
+            dragging = DRAG.NONE;
+            // TODO: put on suit!
+            draggingObject.SetActive(false);
+          } else {
+            ReturnDragged();
+          }
         }
-        SwitchSelection(null);
+      } else {
+        ReturnDragged();
       }
     }
   }
 
-  void SwitchSelection(Unit newSelection) {
-    if (selectedUnit == newSelection) 
-      return; // same unit
-    if (selectedUnit != null) {
-      selectedUnit.SetSelected(false);
-    }
-    if (newSelection != null) {
-      newSelection.SetSelected(true);
-      startingCoords = newSelection.coords;
-    }
-    selectedUnit = newSelection;
-    HighlightMovable();
+  void ReturnDragged() {
+    // Snap the object back to it's starting place.
+    GridBoard.instance.UnhighlightAll();
+    draggingObject.transform.position = dragStartPos;
+    dragging = DRAG.NONE;
   }
 
+  public void Click(Vector3 mousePos) {
+    if (dragging != DRAG.NONE) {
+      Debug.LogError("Received a click even though something is already being dragged!");
+    }
+
+    GridCoords coords = GridBoard.instance.WorldToGrid(mousePos);
+    if (GridBoard.instance.IsCoordValid(coords)) {
+      // Check if we clicked a tile.
+      GridEntity e = GridBoard.instance.GetEntity(coords);
+      if (e != null && e.isUnit && !((Unit)e).hasMoved) {
+        dragging = DRAG.UNIT;
+        SetDragging(e.gameObject, mousePos);
+        GridBoard.instance.HighlightMovable(e.coords, ((Unit)e).remainingMovement);
+      }
+    } else {
+      // Check if we clicked a jumpsuit.
+      int suitIndex = abilities.ClickForSuit(mousePos);
+      if (suitIndex >= 0) {
+        dragging = DRAG.SUIT;
+        SetDragging(suits[suitIndex].gameObject, mousePos);
+      }
+    }
+  }
+
+  void SetDragging(GameObject g, Vector3 mousePosition) {
+    draggingObject = g;
+    dragStartPos = g.transform.position;
+    dragOffset = g.transform.position - mousePosition;
+  }
+
+  // NOTE: no longer used.
+  /*
   public void UndoLastMovement() {
     if (selectedUnit != null && selectedUnit.hasMoved) {
       GridBoard.instance.Move(selectedUnit.coords, startingCoords, Mathf.Infinity);
@@ -88,41 +119,15 @@ public class GameLevel : MonoBehaviour
       HighlightMovable();
     }
   }
+  */
 
-  public void HighlightMovable() {
-    if (selectedUnit == null) {
-      GridBoard.instance.UnhighlightAll();
-    } else {
-      GridBoard.instance.HighlightMovable(selectedUnit.coords, selectedUnit.remainingMovement);
-    }
-  }
-
-  public void MoveSelected(GridCoords coords) {
-    selectedUnit.remainingMovement -= selectedUnit.coords.DistanceTo(coords);
-    selectedUnit.hasMoved = true;
-    GridBoard.instance.Move(selectedUnit.coords, coords);
-    HighlightMovable();
-  }
-
-  public void DoAbility(ABILITY ability) {
+  public void DoAbility(ABILITY ability, Unit doer) {
     if (abilities.IsAvailable(ability)) {
-      if (selectedUnit == null) {
-        InputHandler.instance.Failed(ability); // TODO: should we do this?
-      } else {
-        bool used = selectedUnit.DoAbility(ability);
-        if (used) {
-          if (ability == ABILITY.ELECTROCUTE) {
-            // We've already reloaded the level. Get out quick.
-            return;
-          }
-          SwitchSelection(null); // deselect current unit
-          abilities.Use(ability); // track that we can't use this ability again
-          InputHandler.instance.Use(ability);
-        } else {
-          InputHandler.instance.Failed(ability);
-        }
+      doer.DoAbility(ability);
+      if (ability == ABILITY.ELECTROCUTE) {
+        // We've already reloaded the level. Get out quick.
+        return;
       }
-
     }
   }
 
@@ -133,6 +138,8 @@ public class GameLevel : MonoBehaviour
       Debug.LogError("Header length is less than 3 bytes!");
       return false;
     }
+
+    suits = new Suit[4]; // we'll init these
 
     if (template[0] != (char)'B') return false;
     if (template[1] != (char)'M') return false;
@@ -157,9 +164,9 @@ public class GameLevel : MonoBehaviour
     Int32.TryParse(widthStr, out height);
     if (height == 0) return false;
 
+    List<ABILITY> abs = new List<ABILITY>();
     if (version == 2) {
       // Parse available abilities
-      List<ABILITY> abs = new List<ABILITY>();
       for (int i = 7; i < length; i++) {
         ABILITY a;
         switch ((char)template[i]) {
@@ -171,7 +178,6 @@ public class GameLevel : MonoBehaviour
             break;
           case 'D':
             a = ABILITY.SPAWN;
-            abs.Add(ABILITY.VSPAWN); // TODO: temp
             break;
           case 'E':
             a = ABILITY.ELECTROCUTE;
@@ -194,9 +200,15 @@ public class GameLevel : MonoBehaviour
         return false;
       }
 
-      abilities = new AbilityUsage(abs);
     } else {
-      abilities = new AbilityUsage();
+      abs = new List<ABILITY>() {ABILITY.MAGNETIZE, ABILITY.ROTATE, ABILITY.SPAWN, ABILITY.ELECTROCUTE};
+    }
+    abilities = new AbilityUsage(abs, this);
+    foreach (ABILITY a in abs) {
+      Suit s = GameObject.Instantiate(suitPrefab, this.transform).GetComponent<Suit>();
+      s.ability = a;
+      s.transform.position = boxTop + Vector3.down * ((int) a) * boxDist;
+      suits[(int) a] = s;
     }
 
     return true;
@@ -249,8 +261,6 @@ public class GameLevel : MonoBehaviour
 
     // Reset.
     GridBoard.instance.InitBoard(width, height);
-    InputHandler.instance.ResetUI();
-    InputHandler.instance.InitButtons(abilities);
 
     // Read the contents of the grid-board.
     int row = 0;

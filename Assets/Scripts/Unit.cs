@@ -12,49 +12,34 @@ public class Unit : GridEntity
 
   public GridBoard board = null;
 
-  bool selected = false;
-
   void Start() {
     board = GridBoard.instance;
   }
 
-  public void SetSelected(bool selected) {
-    this.selected = selected;
-    if (!hasActed) 
-      GetComponent<SpriteRenderer>().color = selected ? new Color(.7f, .7f, .7f) : Color.white; // TODO: temp!
-  }
+  public void DoAbility(ABILITY ability) {
+    if (hasActed) return;
 
-  public bool DoAbility(ABILITY ability) {
-    if (hasActed) return false;
-
-    bool success = false;
     switch (ability) {
       case ABILITY.ROTATE:
-        success = DoRotate();
+        DoRotate();
         break;
       case ABILITY.MAGNETIZE:
-        success = DoMagnetize();
+        DoMagnetize();
         break;
       case ABILITY.SPAWN:
-        success = DoSpawn(false);
-        break;
-      case ABILITY.VSPAWN:
-        success = DoSpawn(true);
+        DoSpawn();
         break;
       case ABILITY.ELECTROCUTE:
-        success = DoElectrocute();
-        return success; // we're probably deleted here, let's get out asap.
+        DoElectrocute();
+        return; // we're probably deleted here, let's get out asap.
     }
 
-    hasActed = success;
-    if (hasActed) {
-      remainingMovement = 0;
-      GetComponent<SpriteRenderer>().color = new Color(.4f, .4f, .4f); // TODO: temp!
-    }
-    return success;
+    hasActed = true;
+    remainingMovement = 0;
+    GetComponent<SpriteRenderer>().color = new Color(.4f, .4f, .4f); // TODO: temp!
   }
 
-  bool DoRotate() {
+  void DoRotate() {
     // Iterate counter-clockwise through entities, moving each one space clockwise.
     // We have two strategies depending on whether we're up against a wall (which block rotation).
     // If we are against a wall, we just want to start out iteration from somewhere within the wall.
@@ -123,19 +108,14 @@ public class Unit : GridEntity
       // Restore the entity we set aside.
       board.SetEntity(coords.Go(DIR.DIAGUR), setAside, Mathf.Infinity);
     }
-
-    return true;
   }
 
-  bool DoMagnetize() {
+  void DoMagnetize() {
     // Walk to the end of each row and column. Move entities in the opposite direction by one tile.
-
     MagnetizeLoop(coords.Up(), DIR.UP, DIR.DOWN);
     MagnetizeLoop(coords.Down(), DIR.DOWN, DIR.UP);
     MagnetizeLoop(coords.Left(), DIR.LEFT, DIR.RIGHT);
     MagnetizeLoop(coords.Right(), DIR.RIGHT, DIR.LEFT);
-
-    return true;
   }
 
   void MagnetizeLoop(GridCoords start, DIR primary, DIR opposite) {
@@ -147,21 +127,17 @@ public class Unit : GridEntity
   }
 
   // returns whether was spawn was performed successfully.
-  bool DoSpawn(bool vertical) {
-    GridCoords target1 = vertical ? coords.Up() : coords.Left();
-    GridCoords target2 = vertical ? coords.Down() : coords.Right();
-
-    // check validity
-    if (board.IsCoordOccupied(target1) || board.IsCoordOccupied(target2)) {
-      return false;
+  void DoSpawn() {
+    if (!board.IsCoordOccupied(coords.Left())) {
+      board.InitTile(coords.Left(), TILE.ENEMY);
     }
 
-    board.InitTile(target1, TILE.ENEMY); // TODO: should we make some new entity type instead?
-    board.InitTile(target2, TILE.ENEMY);
-    return true;
+    if (!board.IsCoordOccupied(coords.Right())) {
+      board.InitTile(coords.Right(), TILE.ENEMY);
+    }
   }
 
-  bool DoElectrocute() {
+  void DoElectrocute() {
     // Do BFS of connected entities. Win if every essential entity is hit.
     Queue<GridCoords> queue = new Queue<GridCoords>();
     isElectrocuted = true;
@@ -182,13 +158,12 @@ public class Unit : GridEntity
         GridEntity e = board.GetEntity(new GridCoords(i, j));
         if (e != null && e.isConductive && !e.isElectrocuted) {
           GameManager.instance.FailLevel();
-          return true;
+          return;
         }
       }
     }
 
     GameManager.instance.BeatLevel();
-    return true;
   }
 
   void ElectrocuteNeighbor(GridCoords neighborCoords, Queue<GridCoords> queue) {

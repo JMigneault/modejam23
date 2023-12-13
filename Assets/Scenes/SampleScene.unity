@@ -1007,7 +1007,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &654695708
 RectTransform:
   m_ObjectHideFlags: 0
@@ -1987,14 +1987,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6ba81e16cb077b845ac0e6c35f51fad2, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  abilityButtonParent: {fileID: 654695707}
-  unusedButton: {fileID: 21300000, guid: 373e4e0cee5988a4ea736e6922889e31, type: 3}
-  usedButton: {fileID: 21300000, guid: cb20940d5885260458d9043972838497, type: 3}
-  invalidButton: {fileID: 21300000, guid: 3156df89985eaad4981bf0cd4d30c09b, type: 3}
-  flashButton: {fileID: 21300000, guid: ea9bd59b971c8a84a823da9905b416fc, type: 3}
-  abilityImages: []
-  spawnImage: {fileID: 0}
-  flashTime: 0.3
 --- !u!114 &1754079591 stripped
 MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 3872621596817550058, guid: 29bd1c82355aef14d92bde535ea34bb2, type: 3}
@@ -2314,7 +2306,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 3872621596817550058, guid: 29bd1c82355aef14d92bde535ea34bb2, type: 3}
       propertyPath: levelSet
-      value: generaltesting
+      value: trainintro
       objectReference: {fileID: 0}
     - target: {fileID: 3872621596817550058, guid: 29bd1c82355aef14d92bde535ea34bb2, type: 3}
       propertyPath: levelParent

@@ -106,16 +106,28 @@ public class GridCoords
 public class AbilityUsage {
   
   public bool[] available;
-  
-  public AbilityUsage() {
-    available = new bool[5] { true, true, true, true, true };
-  }
+  GameLevel lvl;
 
-  public AbilityUsage(List<ABILITY> allowed) {
+  public AbilityUsage(List<ABILITY> allowed, GameLevel l) {
+    lvl = l;
     available = new bool[5] { false, false, false, false, false };
     for (int i = 0; i < allowed.Count; i++) {
       available[(int)allowed[i]] = true;
     }
+  }
+
+  public int ClickForSuit(Vector3 mousePosition) {
+    for (int i = 0; i < 4; i++) {
+      if (available[i] && IsInBox(lvl.boxTop + Vector3.down * i * lvl.boxDist, lvl.boxLength, mousePosition)) {
+        return i;
+      }
+    }
+    return -1;
+  }
+
+  private bool IsInBox(Vector3 center, float length, Vector3 mp) {
+    Vector3 lp = (mp - center) / length;
+    return (-0.5f < lp.x && lp.x < 0.5f && -0.5f < lp.y && lp.y < 0.5f);
   }
 
   public bool IsAvailable(ABILITY a) {
@@ -130,4 +142,5 @@ public class AbilityUsage {
 
 public enum DIR {NONE, LEFT, RIGHT, UP, DOWN, DIAGUR, DIAGUL, DIAGDR, DIAGDL}
 public enum TILE {EMPTY, ENEMY, UNIT, TREE}
-public enum ABILITY {MAGNETIZE=0, ROTATE, SPAWN, ELECTROCUTE, VSPAWN} // TODO: delete VSPAWN
+public enum ABILITY {MAGNETIZE=0, ROTATE, SPAWN, ELECTROCUTE} // TODO: delete VSPAWN
+public enum DRAG {NONE, UNIT, SUIT} // what are we dragging?
