@@ -74,7 +74,7 @@ SpriteRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 0
-  m_Sprite: {fileID: 21300000, guid: 4461b82b35ca40943ab98efc761b2a60, type: 3}
+  m_Sprite: {fileID: 21300000, guid: f2847bb07a75bd94eb7770e7b11ea58a, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
   m_FlipY: 0
@@ -99,6 +99,11 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   isEnemy: 0
   isUnit: 1
+  isTree: 0
+  isConductive: 1
+  isElectrocuted: 0
+  totalMovement: 2
   remainingMovement: 2
+  hasMoved: 0
   hasActed: 0
   board: {fileID: 0}

@@ -97,6 +97,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1d0baa280f382a946b5bf2ab6f7f81cf, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  normal: {fileID: 21300000, guid: 54e73c4f4ce4ef94793b4580f0ddeaad, type: 3}
+  normal: {fileID: 21300000, guid: 9895c812386524c40ab3e6e0175bc6ef, type: 3}
   highlighted: {fileID: 21300000, guid: 15be6e83993ccc647abfb93d0819e80a, type: 3}
   sr: {fileID: 0}
