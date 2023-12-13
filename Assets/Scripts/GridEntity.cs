@@ -12,6 +12,8 @@ public class GridEntity : MonoBehaviour
 
   public GridCoords coords;
 
+  public Sprite litBulb;
+
   public void SetCoords(GridCoords coords, float speed) {
     this.coords = coords;
     StartCoroutine(MoveTo(coords, speed));

@@ -13,6 +13,9 @@ public class InputHandler : MonoBehaviour
   }
 
   void Update() {
+    if (GameManager.instance.currentLvl != null && GameManager.instance.currentLvl.levelIsDone) {
+      return;
+    }
 
     if (Input.GetMouseButtonDown(0)) { // click
       GameManager.instance.currentLvl.Click(WorldPos(Input.mousePosition));

@@ -26,6 +26,16 @@ public class GameManager : MonoBehaviour
     ReloadLevel();
   }
 
+  void Update() {
+    if (currentLvl != null && currentLvl.readyToDie) {
+      if (currentLvl.failed) {
+        ReloadLevel();
+      } else {
+        LoadNextLevel();
+      }
+    }
+  }
+
   public void ReloadLevel() {
     if (currentLvl != null) {
       GameObject.Destroy(currentLvl.gameObject);
@@ -47,14 +57,6 @@ public class GameManager : MonoBehaviour
       currentLevel--;
     }
     ReloadLevel();
-  }
-
-  public void FailLevel() {
-    ReloadLevel();
-  }
-
-  public void BeatLevel() {
-    LoadNextLevel();
   }
 
 }

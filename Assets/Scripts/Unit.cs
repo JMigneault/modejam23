@@ -137,40 +137,78 @@ public class Unit : GridEntity
     }
   }
 
+  // Encodes position and distance of a step in the traversal.
+  public struct Step {
+    public Step(GridCoords c, int d) {
+      this.c = c;
+      this.d = d;
+    }
+
+    public GridCoords c;
+    public int d;
+  }
+
+  IEnumerator DoLightingSequence(List<Step> steps) {
+    int currDist = 0;
+    for (int i = 0; i < steps.Count; i++) {
+      Step s = steps[i];
+      if (s.d != currDist) {
+        currDist = s.d;
+        yield return new WaitForSeconds(0.5f);
+      }
+
+      GridEntity e = board.GetEntity(s.c);
+      if (e.isEnemy) { // TODO: electrocute units :)
+        (e).GetComponent<SpriteRenderer>().sprite = e.litBulb;
+      }
+    }
+    yield return new WaitForSeconds(1.5f);
+    GameManager.instance.currentLvl.readyToDie = true;
+    yield return null;
+  }
+
   void DoElectrocute() {
+    GameManager.instance.currentLvl.levelIsDone = true;
+
     // Do BFS of connected entities. Win if every essential entity is hit.
-    Queue<GridCoords> queue = new Queue<GridCoords>();
+    Queue<Step> queue = new Queue<Step>();
+    List<Step> steps = new List<Step>(); // remember everything we examined
     isElectrocuted = true;
-    queue.Enqueue(coords);
+    queue.Enqueue(new Step(coords, 0));
 
     while (queue.Count > 0) {
       // Check each orthogonal direction.
-      GridCoords gc = queue.Dequeue();
-      ElectrocuteNeighbor(gc.Up(), queue);
-      ElectrocuteNeighbor(gc.Right(), queue);
-      ElectrocuteNeighbor(gc.Down(), queue);
-      ElectrocuteNeighbor(gc.Left(), queue);
+      Step s = queue.Dequeue();
+      steps.Add(s);
+      int neighborDist = s.d + 1;
+      ElectrocuteNeighbor(s.c.Up(), neighborDist, queue);
+      ElectrocuteNeighbor(s.c.Right(), neighborDist,  queue);
+      ElectrocuteNeighbor(s.c.Down(), neighborDist, queue);
+      ElectrocuteNeighbor(s.c.Left(), neighborDist, queue);
     }
+
+    // Start lighting animation.
+    StartCoroutine(DoLightingSequence(steps));
 
     // Check if all are electrocuted.
     for (int i = 0; i < board.Width(); i++) {
       for (int j = 0; j < board.Height(); j++) {
         GridEntity e = board.GetEntity(new GridCoords(i, j));
         if (e != null && e.isConductive && !e.isElectrocuted) {
-          GameManager.instance.FailLevel();
+          GameManager.instance.currentLvl.failed = true;
           return;
         }
       }
     }
 
-    GameManager.instance.BeatLevel();
+    GameManager.instance.currentLvl.failed = false;
   }
 
-  void ElectrocuteNeighbor(GridCoords neighborCoords, Queue<GridCoords> queue) {
+  void ElectrocuteNeighbor(GridCoords neighborCoords, int neighborDist, Queue<Step> queue) {
     GridEntity neighbor = board.GetEntity(neighborCoords);
     if (neighbor != null && neighbor.isConductive && !neighbor.isElectrocuted) {
       neighbor.isElectrocuted = true;
-      queue.Enqueue(neighborCoords);
+      queue.Enqueue(new Step(neighborCoords, neighborDist));
     }
   }
 

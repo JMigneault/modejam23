@@ -26,6 +26,10 @@ public class GameLevel : MonoBehaviour
   public GameObject draggingObject = null;
   public DRAG dragging = DRAG.NONE;
 
+  public bool levelIsDone = false;
+  public bool readyToDie = false;
+  public bool failed = false;
+
   void Awake() {
     levelText = GetComponentInChildren<TMP_Text>();
   }
@@ -99,6 +103,7 @@ public class GameLevel : MonoBehaviour
       if (suitIndex >= 0) {
         dragging = DRAG.SUIT;
         SetDragging(suits[suitIndex].gameObject, mousePos);
+        // TODO: shrink the suit!
       }
     }
   }
