@@ -7,10 +7,11 @@ public class Suit : MonoBehaviour
   public ABILITY ability;
   public Sprite[] sprites = null;
 
-  public void SetAbility(ABILITY a, Vector3 boxTop, float boxDist) {
+  public void SetAbility(ABILITY a, Vector3 boxTop, float boxDist, GameObject label) {
     ability = a;
     GetComponent<SpriteRenderer>().sprite = sprites[(int) a];
     transform.position = boxTop + Vector3.down * ((int) a) * boxDist;
+    label.transform.position = transform.position + new Vector3(0, -0.95f, 0);
   }
 
 }

@@ -294,3 +294,12 @@ MonoBehaviour:
   dragOffset: {x: 0, y: 0, z: 0}
   draggingObject: {fileID: 0}
   dragging: 0
+  levelIsDone: 0
+  readyToDie: 0
+  failed: 0
+  labelPrefab: {fileID: 1121638491545622627, guid: 93d5683c591d5e741bb4b9dca8643abb, type: 3}
+  labelSprites:
+  - {fileID: 21300000, guid: 1508e23d82d3947409d20119ca02dfae, type: 3}
+  - {fileID: 21300000, guid: 95161a9524814064e89e171da0390b22, type: 3}
+  - {fileID: 21300000, guid: c16551f7dca4e194aa475de7b993a1db, type: 3}
+  - {fileID: 21300000, guid: ef7ea5d25eb47994a8b2d8db09eaed1e, type: 3}

@@ -30,6 +30,9 @@ public class GameLevel : MonoBehaviour
   public bool readyToDie = false;
   public bool failed = false;
 
+  public GameObject labelPrefab;
+  public Sprite[] labelSprites;
+
   void Awake() {
     levelText = GetComponentInChildren<TMP_Text>();
   }
@@ -212,7 +215,9 @@ public class GameLevel : MonoBehaviour
     abilities = new AbilityUsage(abs, this);
     foreach (ABILITY a in abs) {
       Suit s = GameObject.Instantiate(suitPrefab, this.transform).GetComponent<Suit>();
-      s.SetAbility(a, boxTop, boxDist);
+      GameObject label = GameObject.Instantiate(labelPrefab, this.transform);
+      label.GetComponent<SpriteRenderer>().sprite = labelSprites[(int)a];
+      s.SetAbility(a, boxTop, boxDist, label);
       suits[(int) a] = s;
     }
 
