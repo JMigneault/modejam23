@@ -19,7 +19,7 @@ public class GameLevel : MonoBehaviour
   public Suit[] suits;
   public Vector3 boxTop;
   public float boxDist = 5.0f;
-  public float boxLength = 2.0f;
+  public float boxLength = 2.5f;
 
   public Vector3 dragStartPos;
   public Vector3 dragOffset;
@@ -80,6 +80,7 @@ public class GameLevel : MonoBehaviour
     // Snap the object back to it's starting place.
     GridBoard.instance.UnhighlightAll();
     draggingObject.transform.position = dragStartPos;
+    draggingObject.transform.localScale = Vector3.one;
     dragging = DRAG.NONE;
   }
 
@@ -103,7 +104,7 @@ public class GameLevel : MonoBehaviour
       if (suitIndex >= 0) {
         dragging = DRAG.SUIT;
         SetDragging(suits[suitIndex].gameObject, mousePos);
-        // TODO: shrink the suit!
+        draggingObject.transform.localScale = Vector3.one * 0.5f;
       }
     }
   }
@@ -211,8 +212,7 @@ public class GameLevel : MonoBehaviour
     abilities = new AbilityUsage(abs, this);
     foreach (ABILITY a in abs) {
       Suit s = GameObject.Instantiate(suitPrefab, this.transform).GetComponent<Suit>();
-      s.ability = a;
-      s.transform.position = boxTop + Vector3.down * ((int) a) * boxDist;
+      s.SetAbility(a, boxTop, boxDist);
       suits[(int) a] = s;
     }
 
