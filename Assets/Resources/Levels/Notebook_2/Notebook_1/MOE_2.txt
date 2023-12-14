@@ -1,9 +1,0 @@
-BM20808MOE
-. T T . T T . T
-T X . . T X . T
-T . T . X . X C
-X . C X . . . .
-. . T . X . X T
-. X . C T X . T
-T T . T T T . .
-. . T T . . T T

@@ -4,6 +4,6 @@ T T . X . T . T
 T . . . T . T .
 T . T . T X . T
 . T C . C . X .
-T . T X T . C T
-T T T T T T T T
+T . T X T . . T
+T T T T T T C T
 . T T . T . T .

@@ -1,9 +1,0 @@
-BM20808ME
-T T T T T T T T
-T T T T T T T T
-T T . . . . T T
-T . . . X X . T
-T . . . . . . T
-X X . C X . C T
-T T T T T T T T
-T T T T T T T T

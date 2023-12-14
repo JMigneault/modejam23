@@ -2,8 +2,8 @@ BM20808OE
 . T . T . T . T
 T . T . T . T .
 . T . X X X . T
-T . X . . X C .
+T . X . T X C .
 . T . X C X . T
-T . . . . X T .
+T . . T . X T .
 . T . X X T . T
 T . T . T . T .
