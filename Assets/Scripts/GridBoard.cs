@@ -55,7 +55,7 @@ public class GridBoard : MonoBehaviour
   }
 
   public bool IsCoordValid(GridCoords coords) {
-    Debug.Log(coords.i);
+    if (coords == null) return false;
     return 0 <= coords.i && coords.i < Width() && 0 <= coords.j && coords.j < Height();
   }
 
@@ -89,6 +89,14 @@ public class GridBoard : MonoBehaviour
     for (int i = 0; i < Width(); i++) {
       for (int j = 0; j < Height(); j++) {
         tiles[i, j].Unhighlight();
+      }
+    }
+  }
+
+  public void UndarkenAll() {
+    for (int i = 0; i < Width(); i++) {
+      for (int j = 0; j < Height(); j++) {
+        tiles[i, j].SetDarkened(false);
       }
     }
   }

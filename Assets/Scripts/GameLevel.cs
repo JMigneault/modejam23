@@ -33,6 +33,8 @@ public class GameLevel : MonoBehaviour
   public GameObject labelPrefab;
   public Sprite[] labelSprites;
 
+  public GridCoords hoveringOver = null;
+
   void Awake() {
     levelText = GetComponentInChildren<TMP_Text>();
   }
@@ -40,11 +42,38 @@ public class GameLevel : MonoBehaviour
   public void MousePosition(Vector3 mousePos) {
     if (dragging != DRAG.NONE) {
       draggingObject.transform.position = mousePos + dragOffset;
+
+      if (hoveringOver != null) {
+        GridBoard.instance.GetTile(hoveringOver).SetDarkened(false);
+      }
+      hoveringOver = null;
+
+      GridCoords coords = GridBoard.instance.WorldToGrid(draggingObject.transform.position);
+      bool shouldHighlight = false;
+      if (dragging == DRAG.UNIT) {
+        if (GridBoard.instance.FindPath(draggingObject.GetComponent<GridEntity>().coords, coords, 2 /* lazy */) != null) {
+          shouldHighlight = true;
+        }
+      } else if (dragging == DRAG.SUIT) {
+        GridEntity e = GridBoard.instance.GetEntity(coords);
+        if (e != null && e.isUnit && !((Unit)e).hasActed) {
+          shouldHighlight = true;
+        }
+      }
+
+      if (shouldHighlight) {
+        hoveringOver = coords;
+        GridBoard.instance.GetTile(hoveringOver).SetDarkened(true);
+      }
     }
   }
 
   // -- Game Actions.
   public void Release() {
+    if (GridBoard.instance.IsCoordValid(hoveringOver)) {
+      GridBoard.instance.GetTile(hoveringOver).SetDarkened(false);
+    }
+    hoveringOver = null;
     if (dragging != DRAG.NONE) {
       GridCoords coords = GridBoard.instance.WorldToGrid(draggingObject.transform.position);
       if (GridBoard.instance.IsCoordValid(coords)) {

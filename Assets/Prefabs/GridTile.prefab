@@ -31,7 +31,7 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 0}
-  m_RootOrder: 5
+  m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!212 &5794371579133902524
 SpriteRenderer:
@@ -99,4 +99,5 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   normal: {fileID: 21300000, guid: 9895c812386524c40ab3e6e0175bc6ef, type: 3}
   highlighted: {fileID: 21300000, guid: 40b324b30f2386a4286046df18dd357c, type: 3}
+  darkened: {fileID: 21300000, guid: c778bfd385898da4ab22a3007e824a54, type: 3}
   sr: {fileID: 0}
