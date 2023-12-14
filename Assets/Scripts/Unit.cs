@@ -35,6 +35,7 @@ public class Unit : GridEntity
     }
 
     hasActed = true;
+    hasMoved = true;
     remainingMovement = 0;
     GetComponent<SpriteRenderer>().color = new Color(.4f, .4f, .4f); // TODO: temp!
   }
@@ -92,7 +93,8 @@ public class Unit : GridEntity
 
     // Do the actual switching, being careful to wrap around the sequence.
     int cursor = startingPoint;
-    for (int i = 0; i < sequence.Length - 1; i++) {
+    int nMoves = allNeighborsMovable ? sequence.Length - 1 : sequence.Length;
+    for (int i = 0; i < nMoves; i++) {
       if (cursor == 0) {
         board.Move(sequence[0], sequence[sequence.Length - 1]);
       } else {
