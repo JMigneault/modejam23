@@ -96,9 +96,9 @@ public class Unit : GridEntity
     int nMoves = allNeighborsMovable ? sequence.Length - 1 : sequence.Length;
     for (int i = 0; i < nMoves; i++) {
       if (cursor == 0) {
-        board.Move(sequence[0], sequence[sequence.Length - 1]);
+        board.Move(sequence[0], sequence[sequence.Length - 1], Globals.DEFAULT_MOVE_SPEED);
       } else {
-        board.Move(sequence[cursor], sequence[cursor - 1]);
+        board.Move(sequence[cursor], sequence[cursor - 1], Globals.DEFAULT_MOVE_SPEED);
       }
       cursor++;
       if (cursor == sequence.Length) {
@@ -108,7 +108,7 @@ public class Unit : GridEntity
 
     if (allNeighborsMovable) {
       // Restore the entity we set aside.
-      board.SetEntity(coords.Go(DIR.DIAGUR), setAside, Mathf.Infinity);
+      board.SetEntity(coords.Go(DIR.DIAGUR), setAside, Globals.DEFAULT_MOVE_SPEED);
     }
   }
 
@@ -123,7 +123,7 @@ public class Unit : GridEntity
   void MagnetizeLoop(GridCoords start, DIR primary, DIR opposite) {
     GridCoords c = start;
     while (board.IsCoordValid(c)) {
-      board.Move(c, c.Go(opposite)); // try to pull one space
+      board.Move(c, c.Go(opposite), Globals.DEFAULT_MOVE_SPEED); // try to pull one space
       c = c.Go(primary);
     }
   }

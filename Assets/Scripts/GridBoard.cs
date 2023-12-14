@@ -55,6 +55,7 @@ public class GridBoard : MonoBehaviour
   }
 
   public bool IsCoordValid(GridCoords coords) {
+    Debug.Log(coords.i);
     return 0 <= coords.i && coords.i < Width() && 0 <= coords.j && coords.j < Height();
   }
 
@@ -209,7 +210,7 @@ public class GridBoard : MonoBehaviour
   }
 
   // Returns whether the move succeeded.
-  public bool Move(GridCoords source, GridCoords dest, float speed = 10.0f) {
+  public bool Move(GridCoords source, GridCoords dest, float speed) {
     if (!IsCoordValid(source)) return false;
     if (IsCoordOccupied(dest)) return false;
     if (IsCoordTree(source)) return false; // trees don't move

@@ -139,8 +139,11 @@ public class AbilityUsage {
   }
 }
 
-
 public enum DIR {NONE, LEFT, RIGHT, UP, DOWN, DIAGUR, DIAGUL, DIAGDR, DIAGDL}
 public enum TILE {EMPTY, ENEMY, UNIT, TREE}
 public enum ABILITY {MAGNETIZE=0, ROTATE, SPAWN, ELECTROCUTE} // TODO: delete VSPAWN
 public enum DRAG {NONE, UNIT, SUIT} // what are we dragging?
+
+public class Globals {
+  public const int DEFAULT_MOVE_SPEED = 4;
+}
