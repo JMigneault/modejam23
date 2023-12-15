@@ -18,7 +18,8 @@ public class LevelTransition : MonoBehaviour
   public float height;
   public float width;
 
-  public int numBolts = 1000;
+  private int numBolts;
+  public int boltDensity = 1;
   private GameObject[] fleet = null;
 
   public float speed = 2f;
@@ -28,12 +29,22 @@ public class LevelTransition : MonoBehaviour
   public GameObject blackScreen = null;
 
   void Start() {
+    numBolts = boltDensity * 16 * 9 * boltDensity; // 16:9 aspect ratio
     owner = transform.GetChild(0).transform;
     fleet = new GameObject[numBolts];
-    // Vector3 dp = new Vector3(width / numBolts, height / numBolts, 0);
-    for (int i = 0; i < numBolts; i++) {
-      fleet[i] = GameObject.Instantiate(boltPrefab, owner.transform);
-      fleet[i].transform.localPosition = new Vector3((Random.value - 0.5f) * width, (Random.value - 0.5f) * height, 0);
+
+    float aspectToUnits = 8.0f / 9.0f;
+    float aspectPerBolt = 1.0f / boltDensity;
+    int index = 0;
+    for ( int i = 0; i < 16; i++ ) {
+      for ( int j = 0; j < 9; j++ ) {
+        for ( int k = 0; k < boltDensity; k++ ) {
+          GameObject go = GameObject.Instantiate(boltPrefab, owner.transform);
+          Vector3 aspectCenter = new Vector3((i - 8.0f) + k * aspectPerBolt, (j - 4.5f) + k * aspectPerBolt);
+          go.GetComponent<BoltWiggle>().Init(aspectCenter * aspectToUnits);
+          fleet[index++] = go;
+        }
+      }
     }
 
     owner.gameObject.SetActive(false);

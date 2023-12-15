@@ -15,10 +15,11 @@ public class GridEntity : MonoBehaviour
 
   public Sprite litBulb;
 
-  public bool wobblingLeft = false;
-  public float currentWobble;
   public float wobbleDegrees = 100.0f;
   public float wobbleSpeed = 80.0f;
+  // TODO: push these to local scope
+  public bool wobblingLeft = false;
+  public float currentWobble;
 
   public void SetCoords(GridCoords coords, float speed) {
     this.coords = coords;
