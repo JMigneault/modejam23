@@ -28,15 +28,15 @@ public class InputHandler : MonoBehaviour
     if (Input.GetMouseButtonUp(0)) {
       GameManager.instance.currentLvl.Release();
     }
-
-    if (Input.GetKeyDown(KeyCode.Space)) {
-      LevelTransition.instance.Unleash();
-    }
   }
 
   Vector3 WorldPos(Vector3 mp) {
     Vector3 wp = Camera.main.ScreenToWorldPoint(mp);
     return new Vector3(wp.x, wp.y, 0);
+  }
+
+  public void Button(FUNCTION f) {
+    LevelTransition.instance.DoFunction(f);
   }
 
 }
