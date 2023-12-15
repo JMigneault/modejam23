@@ -287,7 +287,7 @@ MonoBehaviour:
   height: 0
   suitPrefab: {fileID: 2296799656177116852, guid: e3a38f473a31b60468dbff3591b8b3d4, type: 3}
   suits: []
-  boxTop: {x: -5, y: 2.9, z: 0}
+  boxTop: {x: -4.9, y: 2.75, z: 0}
   boxDist: 1.9
   boxLength: 1.7
   dragStartPos: {x: 0, y: 0, z: 0}

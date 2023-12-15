@@ -12,6 +12,8 @@ public class Unit : GridEntity
 
   public GridBoard board = null;
 
+  public GameObject deployOutlinePrefab = null;
+
   void Start() {
     board = GridBoard.instance;
   }
@@ -156,18 +158,35 @@ public class Unit : GridEntity
     if (board.IsCoordValid(coords.Left())) {
       board.GetTile(coords.Left()).Highlight();
     }
+
+    GameObject deployOutlineL = null;
+    GameObject deployOutlineR = null;
+
     if (!board.IsCoordOccupied(coords.Left())) {
-      board.InitTile(coords.Left(), TILE.ENEMY);
+      deployOutlineL = GameObject.Instantiate(deployOutlinePrefab, transform);
+      deployOutlineL.transform.position = board.GetLocalPos(coords.Left()) + board.transform.position;
     }
 
     if (board.IsCoordValid(coords.Right())) {
       board.GetTile(coords.Right()).Highlight();
     }
+
     if (!board.IsCoordOccupied(coords.Right())) {
-      board.InitTile(coords.Right(), TILE.ENEMY);
+      deployOutlineR = GameObject.Instantiate(deployOutlinePrefab, transform);
+      deployOutlineR.transform.position = board.GetLocalPos(coords.Right()) + board.transform.position;
     }
 
-    yield return new WaitForSeconds(0.8f); // TODO: locks out controls...
+    yield return new WaitForSeconds(0.8f);
+
+    if (!board.IsCoordOccupied(coords.Left())) {
+      board.InitTile(coords.Left(), TILE.ENEMY);
+      GameObject.Destroy(deployOutlineL);
+    }
+
+    if (!board.IsCoordOccupied(coords.Right())) {
+      board.InitTile(coords.Right(), TILE.ENEMY);
+      GameObject.Destroy(deployOutlineR);
+    }
 
     board.UnhighlightAll();
     GameManager.instance.currentLvl.animating = false;
