@@ -82,7 +82,7 @@ public class GridBoard : MonoBehaviour
   public GridCoords WorldToGrid(Vector3 pos) {
     Vector3 posRelativeTL = pos - (transform.position + LocalTopLeft());
     Vector3 posCoordSys = new Vector3(posRelativeTL.x, -1.0f * posRelativeTL.y, 0);
-    return new GridCoords((int)(posCoordSys.x / gridSize), (int)(posCoordSys.y / gridSize));
+    return new GridCoords(Mathf.FloorToInt(posCoordSys.x / gridSize), Mathf.FloorToInt(posCoordSys.y / gridSize));
   }
 
   public void UnhighlightAll() {

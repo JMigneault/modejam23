@@ -287,9 +287,9 @@ MonoBehaviour:
   height: 0
   suitPrefab: {fileID: 2296799656177116852, guid: e3a38f473a31b60468dbff3591b8b3d4, type: 3}
   suits: []
-  boxTop: {x: -6, y: 3, z: 0}
-  boxDist: 2
-  boxLength: 1.5
+  boxTop: {x: -5, y: 2.9, z: 0}
+  boxDist: 1.9
+  boxLength: 1.7
   dragStartPos: {x: 0, y: 0, z: 0}
   dragOffset: {x: 0, y: 0, z: 0}
   draggingObject: {fileID: 0}
@@ -297,9 +297,11 @@ MonoBehaviour:
   levelIsDone: 0
   readyToDie: 0
   failed: 0
+  animating: 0
   labelPrefab: {fileID: 1121638491545622627, guid: 93d5683c591d5e741bb4b9dca8643abb, type: 3}
   labelSprites:
-  - {fileID: 21300000, guid: 1508e23d82d3947409d20119ca02dfae, type: 3}
-  - {fileID: 21300000, guid: 95161a9524814064e89e171da0390b22, type: 3}
-  - {fileID: 21300000, guid: c16551f7dca4e194aa475de7b993a1db, type: 3}
-  - {fileID: 21300000, guid: ef7ea5d25eb47994a8b2d8db09eaed1e, type: 3}
+  - {fileID: 21300000, guid: c19b660bc15633b4794658dd380e3654, type: 3}
+  - {fileID: 21300000, guid: 25e2c8d845137e44e892566eb0cff73e, type: 3}
+  - {fileID: 21300000, guid: 188685c0d26900c41b0b67370545ce0e, type: 3}
+  - {fileID: 21300000, guid: 52cc450aaf08bf1408ca786dda34cce2, type: 3}
+  units: []
