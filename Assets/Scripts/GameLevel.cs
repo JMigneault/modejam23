@@ -54,7 +54,8 @@ public class GameLevel : MonoBehaviour
       GridCoords coords = GridBoard.instance.WorldToGrid(draggingObject.transform.position);
       bool shouldHighlight = false;
       if (dragging == DRAG.UNIT) {
-        if (GridBoard.instance.FindPath(draggingObject.GetComponent<GridEntity>().coords, coords, 2 /* lazy */) != null) {
+        if (GridBoard.instance.FindPath(draggingObject.GetComponent<GridEntity>().coords, 
+                                        coords, draggingObject.GetComponent<Unit>().totalMovement) != null) {
           shouldHighlight = true;
         }
       } else if (dragging == DRAG.SUIT) {
@@ -90,6 +91,8 @@ public class GameLevel : MonoBehaviour
             unit.hasMoved = true;
             unit.remainingMovement = 0;
             dragging = DRAG.NONE;
+            // Move hints along
+            TutorialCursor.instance.NextHint();
           } else {
             ReturnDragged();
           }
@@ -101,6 +104,7 @@ public class GameLevel : MonoBehaviour
             dragging = DRAG.NONE;
             // TODO: put on suit!
             draggingObject.SetActive(false);
+            TutorialCursor.instance.NextHint();
           } else {
             ReturnDragged();
           }

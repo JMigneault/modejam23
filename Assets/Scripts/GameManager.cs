@@ -59,4 +59,9 @@ public class GameManager : MonoBehaviour
     ReloadLevel();
   }
 
+  public void SkipLevel() {
+    LoadNextLevel();
+    TutorialCursor.instance.KillHints(); // if you're skipping around you don't get hints
+  }
+
 }

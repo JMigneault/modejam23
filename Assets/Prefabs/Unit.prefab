@@ -102,8 +102,9 @@ MonoBehaviour:
   isTree: 0
   isConductive: 1
   isElectrocuted: 0
-  totalMovement: 2
-  remainingMovement: 2
+  litBulb: {fileID: 0}
+  totalMovement: 1
+  remainingMovement: 1
   hasMoved: 0
   hasActed: 0
   board: {fileID: 0}

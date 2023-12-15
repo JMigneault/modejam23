@@ -36,7 +36,7 @@ public class InputHandler : MonoBehaviour
     if (Input.GetKeyDown(KeyCode.LeftArrow)) {
       GameManager.instance.LoadPrevLevel();
     } else if (Input.GetKeyDown(KeyCode.RightArrow)) {
-      GameManager.instance.LoadNextLevel();
+      GameManager.instance.SkipLevel();
     }
   }
 

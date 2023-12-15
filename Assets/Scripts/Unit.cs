@@ -186,6 +186,8 @@ public class Unit : GridEntity
   }
 
   IEnumerator DoLightingSequence(List<Step> steps) {
+    TutorialCursor.instance.SetHintsPaused(true);
+
     int currDist = 0;
     for (int i = 0; i < steps.Count; i++) {
       Step s = steps[i];
@@ -195,7 +197,6 @@ public class Unit : GridEntity
       }
 
       GridEntity e = board.GetEntity(s.c);
-      board.GetTile(e.coords).Highlight();
       if (e.isEnemy) { // TODO: electrocute units :)
         (e).GetComponent<SpriteRenderer>().sprite = e.litBulb;
       }
@@ -217,8 +218,8 @@ public class Unit : GridEntity
     }
 
     GameManager.instance.currentLvl.animating = false;
-    GameManager.instance.currentLvl.failed = false;
     GameManager.instance.currentLvl.readyToDie = true;
+    TutorialCursor.instance.SetHintsPaused(false);
     yield return null;
   }
 
