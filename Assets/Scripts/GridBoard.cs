@@ -256,8 +256,8 @@ public class GridBoard : MonoBehaviour
   }
 
   // NOTE: also used by Unit spawning ability code to create entities.
-  public void InitTile(GridCoords coords, TILE t) {
-    if (t == TILE.EMPTY) return;
+  public GridEntity InitTile(GridCoords coords, TILE t) {
+    if (t == TILE.EMPTY) return null;
 
     GridEntity ent = null;
     if (t == TILE.ENEMY) {
@@ -271,5 +271,6 @@ public class GridBoard : MonoBehaviour
     }
 
     SetEntity(coords, ent, Mathf.Infinity);
+    return ent;
   }
 }

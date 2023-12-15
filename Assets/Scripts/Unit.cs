@@ -195,6 +195,7 @@ public class Unit : GridEntity
       }
 
       GridEntity e = board.GetEntity(s.c);
+      board.GetTile(e.coords).Highlight();
       if (e.isEnemy) { // TODO: electrocute units :)
         (e).GetComponent<SpriteRenderer>().sprite = e.litBulb;
       }
@@ -241,7 +242,6 @@ public class Unit : GridEntity
 
     // Start lighting animation.
     return DoLightingSequence(steps);
-
   }
 
   void ElectrocuteNeighbor(GridCoords neighborCoords, int neighborDist, Queue<Step> queue) {

@@ -36,6 +36,8 @@ public class GameLevel : MonoBehaviour
 
   public GridCoords hoveringOver = null;
 
+  public List<Unit> units;
+
   void Awake() {
     levelText = GetComponentInChildren<TMP_Text>();
   }
@@ -76,6 +78,7 @@ public class GameLevel : MonoBehaviour
     }
     hoveringOver = null;
     if (dragging != DRAG.NONE) {
+      GridBoard.instance.UnhighlightAll();
       GridCoords coords = GridBoard.instance.WorldToGrid(draggingObject.transform.position);
       if (GridBoard.instance.IsCoordValid(coords)) {
         if (dragging == DRAG.UNIT) {
@@ -87,7 +90,6 @@ public class GameLevel : MonoBehaviour
             unit.hasMoved = true;
             unit.remainingMovement = 0;
             dragging = DRAG.NONE;
-            GridBoard.instance.UnhighlightAll();
           } else {
             ReturnDragged();
           }
@@ -138,6 +140,12 @@ public class GameLevel : MonoBehaviour
         dragging = DRAG.SUIT;
         SetDragging(suits[suitIndex].gameObject, mousePos);
         draggingObject.transform.localScale = Vector3.one * 0.5f;
+        // Highlight units.
+        foreach (Unit u in units) {
+          if (!u.hasActed) {
+            GridBoard.instance.GetTile(u.coords).Highlight();
+          }
+        }
       }
     }
   }
@@ -329,7 +337,8 @@ public class GameLevel : MonoBehaviour
           GridBoard.instance.InitTile(gc, TILE.ENEMY);
           break;
         case 'C':
-          GridBoard.instance.InitTile(gc, TILE.UNIT);
+          Unit u = (Unit) GridBoard.instance.InitTile(gc, TILE.UNIT);
+          units.Add(u);
           break;
         case 'T':
           GridBoard.instance.InitTile(gc, TILE.TREE);
