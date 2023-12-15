@@ -87,6 +87,7 @@ public class GameLevel : MonoBehaviour
           Unit unit = draggingObject.GetComponent<Unit>();
           List<GridCoords> path = GridBoard.instance.FindPath(unit.coords, coords, unit.remainingMovement);
           if (path != null && path.Count > 1) {
+            draggingObject.GetComponent<Unit>().Drop();
             GridBoard.instance.Move(unit.coords, coords, Mathf.Infinity);
             unit.hasMoved = true;
             unit.remainingMovement = 0;
@@ -117,6 +118,9 @@ public class GameLevel : MonoBehaviour
 
   void ReturnDragged() {
     // Snap the object back to it's starting place.
+    if (dragging == DRAG.UNIT) {
+      draggingObject.GetComponent<Unit>().Drop();
+    }
     GridBoard.instance.UnhighlightAll();
     draggingObject.transform.position = dragStartPos;
     draggingObject.transform.localScale = Vector3.one;
@@ -136,6 +140,7 @@ public class GameLevel : MonoBehaviour
       if (e != null && e.isUnit && !((Unit)e).hasMoved) {
         dragging = DRAG.UNIT;
         SetDragging(e.gameObject, mousePos);
+        draggingObject.GetComponent<Unit>().Pickup();
         GridBoard.instance.HighlightMovable(e.coords, ((Unit)e).remainingMovement);
       }
     } else {

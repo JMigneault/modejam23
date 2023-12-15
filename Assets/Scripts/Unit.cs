@@ -17,6 +17,9 @@ public class Unit : GridEntity
   public GameObject magnetizeOutlinePrefab = null;
   List<GameObject> magnetizeOutlines = null;
 
+  public Sprite defaultSprite = null;
+  public Sprite pickedUpSprite = null;
+
   void Start() {
     board = GridBoard.instance;
   }
@@ -292,6 +295,18 @@ public class Unit : GridEntity
     if (neighbor != null && neighbor.isConductive && !neighbor.isElectrocuted) {
       neighbor.isElectrocuted = true;
       queue.Enqueue(new Step(neighborCoords, neighborDist));
+    }
+  }
+
+  public void Pickup() {
+    if (pickedUpSprite != null) {
+      GetComponent<SpriteRenderer>().sprite = pickedUpSprite;
+    }
+  }
+
+  public void Drop() {
+    if (pickedUpSprite != null) {
+      GetComponent<SpriteRenderer>().sprite = defaultSprite;
     }
   }
 

@@ -115,3 +115,5 @@ MonoBehaviour:
   deployOutlinePrefab: {fileID: 6504695257156933859, guid: b3872cd9aa762924b9e95c8c9cd9195e, type: 3}
   rotateOutlinePrefab: {fileID: 6881238161171312599, guid: 24d7982c7cf9dbd4b800d23bab0d79f3, type: 3}
   magnetizeOutlinePrefab: {fileID: 2052789579484178650, guid: 77f8beb742bf0a446a010fa2f4d14c8e, type: 3}
+  defaultSprite: {fileID: 21300000, guid: f2847bb07a75bd94eb7770e7b11ea58a, type: 3}
+  pickedUpSprite: {fileID: 21300000, guid: e7fa6d3a43089f44a82813790b1d4567, type: 3}
