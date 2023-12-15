@@ -30,13 +30,7 @@ public class InputHandler : MonoBehaviour
     }
 
     if (Input.GetKeyDown(KeyCode.Space)) {
-      GameManager.instance.ReloadLevel();
-    }
-
-    if (Input.GetKeyDown(KeyCode.LeftArrow)) {
-      GameManager.instance.LoadPrevLevel();
-    } else if (Input.GetKeyDown(KeyCode.RightArrow)) {
-      GameManager.instance.SkipLevel();
+      LevelTransition.instance.Unleash();
     }
   }
 
