@@ -103,6 +103,10 @@ MonoBehaviour:
   isConductive: 1
   isElectrocuted: 0
   litBulb: {fileID: 0}
+  wobblingLeft: 0
+  currentWobble: 0
+  wobbleDegrees: 3
+  wobbleSpeed: 15
   totalMovement: 1
   remainingMovement: 1
   hasMoved: 0
