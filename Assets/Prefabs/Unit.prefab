@@ -110,3 +110,4 @@ MonoBehaviour:
   board: {fileID: 0}
   deployOutlinePrefab: {fileID: 6504695257156933859, guid: b3872cd9aa762924b9e95c8c9cd9195e, type: 3}
   rotateOutlinePrefab: {fileID: 6881238161171312599, guid: 24d7982c7cf9dbd4b800d23bab0d79f3, type: 3}
+  magnetizeOutlinePrefab: {fileID: 2052789579484178650, guid: 77f8beb742bf0a446a010fa2f4d14c8e, type: 3}

@@ -145,5 +145,5 @@ public enum ABILITY {MAGNETIZE=0, ROTATE, SPAWN, ELECTROCUTE} // TODO: delete VS
 public enum DRAG {NONE, UNIT, SUIT} // what are we dragging?
 
 public class Globals {
-  public const int DEFAULT_MOVE_SPEED = 2;
+  public const float DEFAULT_MOVE_SPEED = 1.8f;
 }

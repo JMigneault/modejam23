@@ -14,6 +14,8 @@ public class Unit : GridEntity
 
   public GameObject deployOutlinePrefab = null;
   public GameObject rotateOutlinePrefab = null;
+  public GameObject magnetizeOutlinePrefab = null;
+  List<GameObject> magnetizeOutlines = null;
 
   void Start() {
     board = GridBoard.instance;
@@ -127,7 +129,7 @@ public class Unit : GridEntity
     outline.transform.position = transform.position;
 
     float t = 0;
-    while (t < 0.8f) {
+    while (t < 0.7f) {
       outline.transform.Rotate(0, 0, -64.0f * Time.deltaTime);
       t += Time.deltaTime;
       yield return null;
@@ -142,24 +144,34 @@ public class Unit : GridEntity
 
   IEnumerator DoMagnetize() {
     // Walk to the end of each row and column. Move entities in the opposite direction by one tile.
+    magnetizeOutlines = new List<GameObject>();
     board.GetTile(coords).Highlight();
-    MagnetizeLoop(coords.Up(), DIR.UP, DIR.DOWN);
-    MagnetizeLoop(coords.Down(), DIR.DOWN, DIR.UP);
-    MagnetizeLoop(coords.Left(), DIR.LEFT, DIR.RIGHT);
-    MagnetizeLoop(coords.Right(), DIR.RIGHT, DIR.LEFT);
+    MagnetizeLoop(coords.Right(), DIR.RIGHT, DIR.LEFT, 0);
+    MagnetizeLoop(coords.Up(), DIR.UP, DIR.DOWN, 90);
+    MagnetizeLoop(coords.Left(), DIR.LEFT, DIR.RIGHT, 180);
+    MagnetizeLoop(coords.Down(), DIR.DOWN, DIR.UP, 270);
 
-    yield return new WaitForSeconds(0.8f);
+    yield return new WaitForSeconds(0.7f);
 
     board.UnhighlightAll();
+    foreach (GameObject go in magnetizeOutlines) {
+      GameObject.Destroy(go);
+    }
     GameManager.instance.currentLvl.animating = false;
     yield return null;
   }
 
-  void MagnetizeLoop(GridCoords start, DIR primary, DIR opposite) {
+  void MagnetizeLoop(GridCoords start, DIR primary, DIR opposite, float rotationDegrees) {
     GridCoords c = start;
     while (board.IsCoordValid(c)) {
       board.Move(c, c.Go(opposite), Globals.DEFAULT_MOVE_SPEED); // try to pull one space
       board.GetTile(c).Highlight();
+      if (!board.IsCoordTree(c)) {
+        GameObject outline = GameObject.Instantiate(magnetizeOutlinePrefab, transform);
+        outline.transform.position = board.GetLocalPos(c) + board.transform.position;
+        outline.transform.Rotate(0, 0, rotationDegrees);
+        magnetizeOutlines.Add(outline);
+      }
       c = c.Go(primary);
     }
   }
@@ -187,7 +199,7 @@ public class Unit : GridEntity
       deployOutlineR.transform.position = board.GetLocalPos(coords.Right()) + board.transform.position;
     }
 
-    yield return new WaitForSeconds(0.8f);
+    yield return new WaitForSeconds(0.7f);
 
     if (!board.IsCoordOccupied(coords.Left())) {
       board.InitTile(coords.Left(), TILE.ENEMY);
