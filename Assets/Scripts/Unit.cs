@@ -13,6 +13,7 @@ public class Unit : GridEntity
   public GridBoard board = null;
 
   public GameObject deployOutlinePrefab = null;
+  public GameObject rotateOutlinePrefab = null;
 
   void Start() {
     board = GridBoard.instance;
@@ -122,7 +123,17 @@ public class Unit : GridEntity
       }
     }
 
-    yield return new WaitForSeconds(0.8f); // TODO: locks out controls...
+    GameObject outline = GameObject.Instantiate(rotateOutlinePrefab, transform);
+    outline.transform.position = transform.position;
+
+    float t = 0;
+    while (t < 0.8f) {
+      outline.transform.Rotate(0, 0, -64.0f * Time.deltaTime);
+      t += Time.deltaTime;
+      yield return null;
+    }
+
+    GameObject.Destroy(outline);
 
     board.UnhighlightAll();
     GameManager.instance.currentLvl.animating = false;
