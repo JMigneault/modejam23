@@ -19,18 +19,20 @@ public class Unit : GridEntity
   public void DoAbility(ABILITY ability) {
     if (hasActed) return;
 
+    GameManager.instance.currentLvl.animating = true;
+
     switch (ability) {
       case ABILITY.ROTATE:
-        DoRotate();
+        StartCoroutine(DoRotate());
         break;
       case ABILITY.MAGNETIZE:
-        DoMagnetize();
+        StartCoroutine(DoMagnetize());
         break;
       case ABILITY.SPAWN:
-        DoSpawn();
+        StartCoroutine(DoSpawn());
         break;
       case ABILITY.ELECTROCUTE:
-        DoElectrocute();
+        StartCoroutine(DoElectrocute());
         return; // we're probably deleted here, let's get out asap.
     }
 
@@ -40,7 +42,7 @@ public class Unit : GridEntity
     GetComponent<SpriteRenderer>().color = new Color(.4f, .4f, .4f); // TODO: temp!
   }
 
-  void DoRotate() {
+  IEnumerator DoRotate() {
     // Iterate counter-clockwise through entities, moving each one space clockwise.
     // We have two strategies depending on whether we're up against a wall (which block rotation).
     // If we are against a wall, we just want to start out iteration from somewhere within the wall.
@@ -110,33 +112,66 @@ public class Unit : GridEntity
       // Restore the entity we set aside.
       board.SetEntity(coords.Go(DIR.DIAGUR), setAside, Globals.DEFAULT_MOVE_SPEED);
     }
+
+    // Highlight effected area.
+    for (int i = 0; i < sequence.Length; i++) {
+      if (board.IsCoordValid(sequence[i])) {
+        board.GetTile(sequence[i]).Highlight();
+      }
+    }
+
+    yield return new WaitForSeconds(0.8f); // TODO: locks out controls...
+
+    board.UnhighlightAll();
+    GameManager.instance.currentLvl.animating = false;
+    yield return null;
   }
 
-  void DoMagnetize() {
+  IEnumerator DoMagnetize() {
     // Walk to the end of each row and column. Move entities in the opposite direction by one tile.
+    board.GetTile(coords).Highlight();
     MagnetizeLoop(coords.Up(), DIR.UP, DIR.DOWN);
     MagnetizeLoop(coords.Down(), DIR.DOWN, DIR.UP);
     MagnetizeLoop(coords.Left(), DIR.LEFT, DIR.RIGHT);
     MagnetizeLoop(coords.Right(), DIR.RIGHT, DIR.LEFT);
+
+    yield return new WaitForSeconds(0.8f);
+
+    board.UnhighlightAll();
+    GameManager.instance.currentLvl.animating = false;
+    yield return null;
   }
 
   void MagnetizeLoop(GridCoords start, DIR primary, DIR opposite) {
     GridCoords c = start;
     while (board.IsCoordValid(c)) {
       board.Move(c, c.Go(opposite), Globals.DEFAULT_MOVE_SPEED); // try to pull one space
+      board.GetTile(c).Highlight();
       c = c.Go(primary);
     }
   }
 
   // returns whether was spawn was performed successfully.
-  void DoSpawn() {
+  IEnumerator DoSpawn() {
+    if (board.IsCoordValid(coords.Left())) {
+      board.GetTile(coords.Left()).Highlight();
+    }
     if (!board.IsCoordOccupied(coords.Left())) {
       board.InitTile(coords.Left(), TILE.ENEMY);
     }
 
+    if (board.IsCoordValid(coords.Right())) {
+      board.GetTile(coords.Right()).Highlight();
+    }
     if (!board.IsCoordOccupied(coords.Right())) {
       board.InitTile(coords.Right(), TILE.ENEMY);
     }
+
+    yield return new WaitForSeconds(0.8f); // TODO: locks out controls...
+
+    board.UnhighlightAll();
+    GameManager.instance.currentLvl.animating = false;
+    yield return null;
   }
 
   // Encodes position and distance of a step in the traversal.
@@ -165,13 +200,28 @@ public class Unit : GridEntity
       }
     }
     yield return new WaitForSeconds(1.5f);
+
+    // Check if all are electrocuted.
+    bool done = false;
+    for (int i = 0; i < board.Width(); i++) {
+      for (int j = 0; j < board.Height(); j++) {
+        GridEntity e = board.GetEntity(new GridCoords(i, j));
+        if (e != null && e.isConductive && !e.isElectrocuted) {
+          GameManager.instance.currentLvl.failed = true;
+          done = true;
+          break;
+        }
+      }
+      if (done) break;
+    }
+
+    GameManager.instance.currentLvl.animating = false;
+    GameManager.instance.currentLvl.failed = false;
     GameManager.instance.currentLvl.readyToDie = true;
     yield return null;
   }
 
-  void DoElectrocute() {
-    GameManager.instance.currentLvl.levelIsDone = true;
-
+  IEnumerator DoElectrocute() {
     // Do BFS of connected entities. Win if every essential entity is hit.
     Queue<Step> queue = new Queue<Step>();
     List<Step> steps = new List<Step>(); // remember everything we examined
@@ -190,20 +240,8 @@ public class Unit : GridEntity
     }
 
     // Start lighting animation.
-    StartCoroutine(DoLightingSequence(steps));
+    return DoLightingSequence(steps);
 
-    // Check if all are electrocuted.
-    for (int i = 0; i < board.Width(); i++) {
-      for (int j = 0; j < board.Height(); j++) {
-        GridEntity e = board.GetEntity(new GridCoords(i, j));
-        if (e != null && e.isConductive && !e.isElectrocuted) {
-          GameManager.instance.currentLvl.failed = true;
-          return;
-        }
-      }
-    }
-
-    GameManager.instance.currentLvl.failed = false;
   }
 
   void ElectrocuteNeighbor(GridCoords neighborCoords, int neighborDist, Queue<Step> queue) {

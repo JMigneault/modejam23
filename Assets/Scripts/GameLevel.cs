@@ -29,6 +29,7 @@ public class GameLevel : MonoBehaviour
   public bool levelIsDone = false;
   public bool readyToDie = false;
   public bool failed = false;
+  public bool animating = false;
 
   public GameObject labelPrefab;
   public Sprite[] labelSprites;
