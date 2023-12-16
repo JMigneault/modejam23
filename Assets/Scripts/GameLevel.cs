@@ -180,6 +180,7 @@ public class GameLevel : MonoBehaviour
 
   public void DoAbility(ABILITY ability, Unit doer) {
     if (abilities.IsAvailable(ability)) {
+      SoundManager.instance.PlayAbility(ability);
       doer.DoAbility(ability);
       if (ability == ABILITY.ELECTROCUTE) {
         // We've already reloaded the level. Get out quick.

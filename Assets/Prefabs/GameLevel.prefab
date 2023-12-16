@@ -300,8 +300,8 @@ MonoBehaviour:
   animating: 0
   labelPrefab: {fileID: 1121638491545622627, guid: 93d5683c591d5e741bb4b9dca8643abb, type: 3}
   labelSprites:
-  - {fileID: 21300000, guid: c19b660bc15633b4794658dd380e3654, type: 3}
-  - {fileID: 21300000, guid: 25e2c8d845137e44e892566eb0cff73e, type: 3}
-  - {fileID: 21300000, guid: 188685c0d26900c41b0b67370545ce0e, type: 3}
-  - {fileID: 21300000, guid: 52cc450aaf08bf1408ca786dda34cce2, type: 3}
+  - {fileID: 21300000, guid: f45a42ec8c83a8044b680e76a9788b61, type: 3}
+  - {fileID: 21300000, guid: 1927ab9aa5a10a1408f71451506a66c4, type: 3}
+  - {fileID: 21300000, guid: 89121829ec7e39a4687acf10e9a5c52d, type: 3}
+  - {fileID: 21300000, guid: 2c923e04f0fd5564caa306bb65762674, type: 3}
   units: []

@@ -106,6 +106,7 @@ public class LevelTransition : MonoBehaviour
   }
 
   public void DoFunction(FUNCTION function) {
+    SoundManager.instance.PlayFunction(function);
     switch (function) {
       case FUNCTION.WIN:
         WipeWithBolts(function);
