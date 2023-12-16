@@ -20,6 +20,8 @@ public class Unit : GridEntity
   public Sprite defaultSprite = null;
   public Sprite pickedUpSprite = null;
 
+  public Sprite bulbedSprite = null;
+
   void Start() {
     board = GridBoard.instance;
   }
@@ -47,7 +49,7 @@ public class Unit : GridEntity
     hasActed = true;
     hasMoved = true;
     remainingMovement = 0;
-    GetComponent<SpriteRenderer>().color = new Color(.4f, .4f, .4f); // TODO: temp!
+    GetComponent<SpriteRenderer>().sprite = bulbedSprite;
   }
 
   IEnumerator DoRotate() {
@@ -244,6 +246,8 @@ public class Unit : GridEntity
       GridEntity e = board.GetEntity(s.c);
       if (e.isEnemy) { // TODO: electrocute units :)
         (e).GetComponent<SpriteRenderer>().sprite = e.litBulb;
+      } else if (e.isUnit) {
+        (e).GetComponent<SpriteRenderer>().sprite = e.litUnit;
       }
     }
     yield return new WaitForSeconds(1.5f);

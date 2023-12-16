@@ -14,6 +14,7 @@ public class GridEntity : MonoBehaviour
   public GridCoords coords;
 
   public Sprite litBulb;
+  public Sprite litUnit;
 
   public float wobbleDegrees = 100.0f;
   public float wobbleSpeed = 80.0f;
