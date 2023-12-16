@@ -38,9 +38,6 @@ public class GameManager : MonoBehaviour
   }
 
   public void ReloadLevel() {
-    Debug.Log("current " + currentLevel);
-    Debug.Log("minor " + majorLevelNumber);
-    Debug.Log("major " + minorLevelNumber);
     if (currentLvl != null) {
       GameObject.Destroy(currentLvl.gameObject);
     }

@@ -137,7 +137,6 @@ public class GameLevel : MonoBehaviour
 
     GridCoords coords = GridBoard.instance.WorldToGrid(mousePos);
     if (GridBoard.instance.IsCoordValid(coords)) {
-      Debug.Log("that's super valid: " + coords.i);
       // Check if we clicked a tile.
       GridEntity e = GridBoard.instance.GetEntity(coords);
       if (e != null && e.isUnit && !((Unit)e).hasMoved) {

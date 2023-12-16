@@ -25,7 +25,7 @@ public class LevelLoader
   }
 
   public GameLevel LoadLevel(int lvlNumber, Transform levelPrefab, Transform levelParent) {
-    Debug.Log("Loading Level: " + levelTexts[lvlNumber].name);
+    // Debug.Log("Loading Level: " + levelTexts[lvlNumber].name);
     GameLevel lvl = GameObject.Instantiate(levelPrefab, levelParent).GetComponent<GameLevel>();
     lvl.InitFrom(levelTexts[lvlNumber].bytes, levelTexts[lvlNumber].name);
     return lvl;
