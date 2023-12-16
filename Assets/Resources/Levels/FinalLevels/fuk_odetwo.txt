@@ -1,7 +1,7 @@
 BM20808ODE
 . T T T T T . T
 T X . . X . T .
-T C . . . T . .
+T C . T . T . .
 . X C . T . T T
 T X . C T . . .
 . T X T . T . T

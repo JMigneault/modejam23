@@ -3,7 +3,7 @@ T T T T T T T T
 T T . T . . T T
 T . T C T X T .
 C . X . X . C .
-. . . X . . . .
+. . . X . . . T
 X . X . X . X .
 T T . C . X T T
-T T . . . . T T
+T T T . T . T T

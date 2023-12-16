@@ -38,6 +38,9 @@ public class GameManager : MonoBehaviour
   }
 
   public void ReloadLevel() {
+    Debug.Log("current " + currentLevel);
+    Debug.Log("minor " + majorLevelNumber);
+    Debug.Log("major " + minorLevelNumber);
     if (currentLvl != null) {
       GameObject.Destroy(currentLvl.gameObject);
     }
@@ -50,7 +53,7 @@ public class GameManager : MonoBehaviour
     if (currentLevel < lvlLoader.GetNumLevels() - 1) {
       currentLevel++;
       minorLevelNumber++;
-      if (minorLevelNumber == levelSectionLengths[majorLevelNumber]) {
+      if (minorLevelNumber > levelSectionLengths[majorLevelNumber]) {
         // Next section
         majorLevelNumber++;
         minorLevelNumber = 1;
