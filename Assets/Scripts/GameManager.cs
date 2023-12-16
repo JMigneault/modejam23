@@ -16,6 +16,8 @@ public class GameManager : MonoBehaviour
   int majorLevelNumber = 0;
   int minorLevelNumber = 1;
 
+  public int[] levelSectionLengths = null; // TODO: hardcoded level numbering
+
   // Singleton
   public static GameManager instance;
   void Awake() {
@@ -47,6 +49,12 @@ public class GameManager : MonoBehaviour
     lvlLoader.Init(levelSet);
     if (currentLevel < lvlLoader.GetNumLevels() - 1) {
       currentLevel++;
+      minorLevelNumber++;
+      if (minorLevelNumber == levelSectionLengths[majorLevelNumber]) {
+        // Next section
+        majorLevelNumber++;
+        minorLevelNumber = 1;
+      }
     }
     ReloadLevel();
   }
@@ -55,6 +63,12 @@ public class GameManager : MonoBehaviour
     lvlLoader.Init(levelSet);
     if (currentLevel > 0) {
       currentLevel--;
+      minorLevelNumber--;
+      if (minorLevelNumber == 0) {
+        // Next section
+        majorLevelNumber--;
+        minorLevelNumber = levelSectionLengths[majorLevelNumber];
+      }
     }
     ReloadLevel();
   }

@@ -2736,6 +2736,30 @@ PrefabInstance:
       propertyPath: levelParent
       value: 
       objectReference: {fileID: 2094980677}
+    - target: {fileID: 3872621596817550058, guid: 29bd1c82355aef14d92bde535ea34bb2, type: 3}
+      propertyPath: levelSectionLengths.Array.size
+      value: 5
+      objectReference: {fileID: 0}
+    - target: {fileID: 3872621596817550058, guid: 29bd1c82355aef14d92bde535ea34bb2, type: 3}
+      propertyPath: levelSectionLengths.Array.data[0]
+      value: 4
+      objectReference: {fileID: 0}
+    - target: {fileID: 3872621596817550058, guid: 29bd1c82355aef14d92bde535ea34bb2, type: 3}
+      propertyPath: levelSectionLengths.Array.data[1]
+      value: 5
+      objectReference: {fileID: 0}
+    - target: {fileID: 3872621596817550058, guid: 29bd1c82355aef14d92bde535ea34bb2, type: 3}
+      propertyPath: levelSectionLengths.Array.data[2]
+      value: 6
+      objectReference: {fileID: 0}
+    - target: {fileID: 3872621596817550058, guid: 29bd1c82355aef14d92bde535ea34bb2, type: 3}
+      propertyPath: levelSectionLengths.Array.data[3]
+      value: 7
+      objectReference: {fileID: 0}
+    - target: {fileID: 3872621596817550058, guid: 29bd1c82355aef14d92bde535ea34bb2, type: 3}
+      propertyPath: levelSectionLengths.Array.data[4]
+      value: 7
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
