@@ -51,6 +51,8 @@ public class LevelTransition : MonoBehaviour
   }
 
   IEnumerator RunBoltWipe(FUNCTION function) {
+    TutorialCursor.instance.SetHintsPaused(true);
+
     owner.gameObject.SetActive(true);
     GameManager.instance.currentLvl.animating = true;
     Vector3 start = new Vector3(0, yTop + height / 2.0f);
@@ -70,14 +72,19 @@ public class LevelTransition : MonoBehaviour
     }
     GameManager.instance.currentLvl.animating = false;
     owner.gameObject.SetActive(false);
+    TutorialCursor.instance.SetHintsPaused(false);
     yield return null;
   }
 
   IEnumerator RunBlackWipe(FUNCTION function) {
+    TutorialCursor.instance.SetHintsPaused(true);
+    GameManager.instance.currentLvl.animating = true;
     blackScreen.SetActive(true);
     yield return new WaitForSeconds(blackTime);
     TransitionLevel(function);
     blackScreen.SetActive(false);
+    GameManager.instance.currentLvl.animating = false;
+    TutorialCursor.instance.SetHintsPaused(false);
   }
 
   public void WipeWithBolts(FUNCTION function) {

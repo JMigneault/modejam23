@@ -268,9 +268,12 @@ public class Unit : GridEntity
       if (done) break;
     }
 
+    if (!GameManager.instance.currentLvl.failed) {
+      TutorialCursor.instance.NextHint();
+    }
+
     GameManager.instance.currentLvl.animating = false;
     GameManager.instance.currentLvl.readyToDie = true;
-    TutorialCursor.instance.SetHintsPaused(false);
     yield return null;
   }
 

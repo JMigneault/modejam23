@@ -36,6 +36,9 @@ public class InputHandler : MonoBehaviour
   }
 
   public void Button(FUNCTION f) {
+    if (GameManager.instance.currentLvl != null && GameManager.instance.currentLvl.animating) {
+      return;
+    }
     LevelTransition.instance.DoFunction(f);
   }
 

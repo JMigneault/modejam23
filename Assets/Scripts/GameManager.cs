@@ -13,6 +13,8 @@ public class GameManager : MonoBehaviour
   public string levelSet = "protov1";
 
   int currentLevel = 0;
+  int majorLevelNumber = 0;
+  int minorLevelNumber = 1;
 
   // Singleton
   public static GameManager instance;
@@ -38,6 +40,7 @@ public class GameManager : MonoBehaviour
       GameObject.Destroy(currentLvl.gameObject);
     }
     currentLvl = lvlLoader.LoadLevel(currentLevel, levelPrefab, levelParent);
+    currentLvl.SetLevelNumberDisplay(majorLevelNumber, minorLevelNumber);
   }
 
   public void LoadNextLevel() {

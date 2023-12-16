@@ -38,6 +38,10 @@ public class GameLevel : MonoBehaviour
 
   public List<Unit> units;
 
+  public Sprite[] digitSprites = null;
+  public SpriteRenderer majorSpriteRenderer = null;
+  public SpriteRenderer minorSpriteRenderer = null;
+
   void Awake() {
     levelText = GetComponentInChildren<TMP_Text>();
   }
@@ -105,7 +109,6 @@ public class GameLevel : MonoBehaviour
             dragging = DRAG.NONE;
             // TODO: put on suit!
             draggingObject.SetActive(false);
-            TutorialCursor.instance.NextHint();
           } else {
             ReturnDragged();
           }
@@ -187,6 +190,11 @@ public class GameLevel : MonoBehaviour
         return;
       }
     }
+  }
+  
+  public void SetLevelNumberDisplay(int major, int minor) {
+    majorSpriteRenderer.sprite = digitSprites[major];
+    minorSpriteRenderer.sprite = digitSprites[minor];
   }
 
   // -- Level setup.
@@ -275,7 +283,9 @@ public class GameLevel : MonoBehaviour
 
   public void InitFrom(byte[] template, string fileName) {
 
-    levelText.text = fileName;
+    if (levelText != null) {
+      levelText.text = fileName;
+    }
 
     // ----- Parse the template.
 
