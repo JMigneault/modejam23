@@ -74,12 +74,12 @@ SpriteRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 10
-  m_Sprite: {fileID: 21300000, guid: f2847bb07a75bd94eb7770e7b11ea58a, type: 3}
+  m_Sprite: {fileID: 21300000, guid: 1e17cd4bb526ee64ea31826da494ab73, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
   m_FlipY: 0
   m_DrawMode: 0
-  m_Size: {x: 1, y: 1}
+  m_Size: {x: 2.13, y: 3}
   m_AdaptiveModeThreshold: 0.5
   m_SpriteTileMode: 0
   m_WasSpriteAssigned: 1
@@ -103,7 +103,7 @@ MonoBehaviour:
   isConductive: 1
   isElectrocuted: 0
   litBulb: {fileID: 0}
-  litUnit: {fileID: 21300000, guid: 764b6a880bec4b648aa4116652826031, type: 3}
+  litUnit: {fileID: 21300000, guid: 39662e0ddb3102a44a5e1019b6218894, type: 3}
   wobbleDegrees: 1.25
   wobbleSpeed: 20
   wobblingLeft: 0
@@ -116,6 +116,6 @@ MonoBehaviour:
   deployOutlinePrefab: {fileID: 6504695257156933859, guid: b3872cd9aa762924b9e95c8c9cd9195e, type: 3}
   rotateOutlinePrefab: {fileID: 6881238161171312599, guid: 24d7982c7cf9dbd4b800d23bab0d79f3, type: 3}
   magnetizeOutlinePrefab: {fileID: 2052789579484178650, guid: 77f8beb742bf0a446a010fa2f4d14c8e, type: 3}
-  defaultSprite: {fileID: 21300000, guid: f2847bb07a75bd94eb7770e7b11ea58a, type: 3}
+  defaultSprite: {fileID: 21300000, guid: 1e17cd4bb526ee64ea31826da494ab73, type: 3}
   pickedUpSprite: {fileID: 21300000, guid: e7fa6d3a43089f44a82813790b1d4567, type: 3}
-  bulbedSprite: {fileID: 21300000, guid: 0b1e2e7f2fb4e1645837d3a9c95139fc, type: 3}
+  bulbedSprite: {fileID: 21300000, guid: 62d14354fbdf7984e8d7a8fc4f190b52, type: 3}
