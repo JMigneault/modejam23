@@ -49,7 +49,6 @@ public class Unit : GridEntity
     hasActed = true;
     hasMoved = true;
     remainingMovement = 0;
-    GetComponent<SpriteRenderer>().sprite = bulbedSprite;
   }
 
   IEnumerator DoRotate() {
@@ -143,6 +142,7 @@ public class Unit : GridEntity
     GameObject.Destroy(outline);
 
     board.UnhighlightAll();
+    GetComponent<SpriteRenderer>().sprite = bulbedSprite;
     GameManager.instance.currentLvl.animating = false;
     yield return null;
   }
@@ -162,6 +162,7 @@ public class Unit : GridEntity
     foreach (GameObject go in magnetizeOutlines) {
       GameObject.Destroy(go);
     }
+    GetComponent<SpriteRenderer>().sprite = bulbedSprite;
     GameManager.instance.currentLvl.animating = false;
     yield return null;
   }
@@ -217,6 +218,7 @@ public class Unit : GridEntity
     }
 
     board.UnhighlightAll();
+    GetComponent<SpriteRenderer>().sprite = bulbedSprite;
     GameManager.instance.currentLvl.animating = false;
     yield return null;
   }

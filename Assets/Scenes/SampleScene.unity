@@ -156,6 +156,7 @@ Transform:
   - {fileID: 633746590}
   - {fileID: 1208551430}
   - {fileID: 1203885402}
+  - {fileID: 441361790}
   m_Father: {fileID: 0}
   m_RootOrder: 7
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -423,7 +424,7 @@ BoxCollider2D:
   m_IsTrigger: 0
   m_UsedByEffector: 0
   m_UsedByComposite: 0
-  m_Offset: {x: 0, y: 0}
+  m_Offset: {x: 0, y: 0.00095784664}
   m_SpriteTilingProperty:
     border: {x: 0, y: 0, z: 0, w: 0}
     pivot: {x: 0.5, y: 0.5}
@@ -434,7 +435,7 @@ BoxCollider2D:
     adaptiveTiling: 0
   m_AutoTiling: 0
   serializedVersion: 2
-  m_Size: {x: 1.2352941, y: 0.3882353}
+  m_Size: {x: 2.5494127, y: 0.9878255}
   m_EdgeRadius: 0
 --- !u!1 &439776980
 GameObject:
@@ -467,7 +468,7 @@ AudioSource:
   OutputAudioMixerGroup: {fileID: 0}
   m_audioClip: {fileID: 0}
   m_PlayOnAwake: 1
-  m_Volume: 0.5
+  m_Volume: 0.2
   m_Pitch: 1
   Loop: 0
   Mute: 0
@@ -578,7 +579,7 @@ AudioSource:
   OutputAudioMixerGroup: {fileID: 0}
   m_audioClip: {fileID: 8300000, guid: ffe7425c0a6b5b44e93c53a6fea8e2a6, type: 3}
   m_PlayOnAwake: 1
-  m_Volume: 0.5
+  m_Volume: 0.4
   m_Pitch: 1
   Loop: 1
   Mute: 0
@@ -676,14 +677,14 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   musicSource: {fileID: 439776983}
   soundSource: {fileID: 439776981}
-  rotate: {fileID: 8300000, guid: d95fcd6e625997243913bfbbc75d85c5, type: 3}
-  spawn: {fileID: 8300000, guid: 25492f0877591164e801dc7b7ef57f13, type: 3}
-  magnetize: {fileID: 8300000, guid: c19ea4ea7f639d04bbd2df186cd56d2c, type: 3}
-  electrocute: {fileID: 8300000, guid: a0f7e8fb3e3aa1640b9051e364118aa5, type: 3}
-  win: {fileID: 8300000, guid: 886aee8849a3f354a94760f789ecc88d, type: 3}
+  rotate: {fileID: 8300000, guid: 281212bf894bfc84691facfb25c9d5bd, type: 3}
+  spawn: {fileID: 8300000, guid: 017548d05ee7b1c4db70f308fc72a4a1, type: 3}
+  magnetize: {fileID: 8300000, guid: c6e87f962e236f5409d867168942638c, type: 3}
+  electrocute: {fileID: 8300000, guid: c6d6b8dd3e5a8b8489d35a699a965bd8, type: 3}
+  win: {fileID: 8300000, guid: 893f4d2ab3a38c9419934351935a6c4f, type: 3}
   reload: {fileID: 0}
-  previous: {fileID: 8300000, guid: e3da6fdeac7fed1408b0c1ea1044b6b5, type: 3}
-  skip: {fileID: 8300000, guid: e3da6fdeac7fed1408b0c1ea1044b6b5, type: 3}
+  previous: {fileID: 8300000, guid: f7d1629a6a567624490d9b3306691e9f, type: 3}
+  skip: {fileID: 8300000, guid: f7d1629a6a567624490d9b3306691e9f, type: 3}
 --- !u!1 &441361788
 GameObject:
   m_ObjectHideFlags: 0
@@ -760,13 +761,13 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 441361788}
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 5.57, y: 1.6, z: 0}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 2.4098196, y: 1.9608898, z: -0.6968655}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
-  m_Father: {fileID: 0}
-  m_RootOrder: 9
+  m_Father: {fileID: 13142996}
+  m_RootOrder: -1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!4 &508532745 stripped
 Transform:
@@ -1148,7 +1149,7 @@ BoxCollider2D:
   m_IsTrigger: 0
   m_UsedByEffector: 0
   m_UsedByComposite: 0
-  m_Offset: {x: 0, y: 0}
+  m_Offset: {x: 0.0013008118, y: 0.0026016235}
   m_SpriteTilingProperty:
     border: {x: 0, y: 0, z: 0, w: 0}
     pivot: {x: 0.5, y: 0.5}
@@ -1159,7 +1160,7 @@ BoxCollider2D:
     adaptiveTiling: 0
   m_AutoTiling: 0
   serializedVersion: 2
-  m_Size: {x: 1.2352941, y: 0.3882353}
+  m_Size: {x: 2.5491123, y: 0.9918113}
   m_EdgeRadius: 0
 --- !u!212 &1010523573
 SpriteRenderer:
@@ -1726,7 +1727,7 @@ BoxCollider2D:
   m_IsTrigger: 0
   m_UsedByEffector: 0
   m_UsedByComposite: 0
-  m_Offset: {x: 0, y: 0}
+  m_Offset: {x: 0.0013008118, y: 0.00000011920929}
   m_SpriteTilingProperty:
     border: {x: 0, y: 0, z: 0, w: 0}
     pivot: {x: 0.5, y: 0.5}
@@ -1737,7 +1738,7 @@ BoxCollider2D:
     adaptiveTiling: 0
   m_AutoTiling: 0
   serializedVersion: 2
-  m_Size: {x: 1.2352941, y: 0.3882353}
+  m_Size: {x: 2.5543156, y: 0.99181104}
   m_EdgeRadius: 0
 --- !u!212 &1457327103
 SpriteRenderer:
