@@ -1,0 +1,9 @@
+BM20808MODE
+T . T . T . T .
+. T . T . T . T
+X . . . . . X .
+. X . C . X . T
+. . X . X . C .
+. T T X . T T .
+. . . C . C . T
+T T T T T T T T

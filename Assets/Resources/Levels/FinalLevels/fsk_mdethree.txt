@@ -1,0 +1,9 @@
+BM20808MDE
+T . . T . . . T
+. T T X T T . T
+C X . . . T . .
+. X . C . X T .
+T T . . . X . .
+. . T . . . T .
+. T . C . T . .
+T . T . T . T T
