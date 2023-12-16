@@ -143,7 +143,7 @@ public enum DIR {NONE, LEFT, RIGHT, UP, DOWN, DIAGUR, DIAGUL, DIAGDR, DIAGDL}
 public enum TILE {EMPTY, ENEMY, UNIT, TREE}
 public enum ABILITY {MAGNETIZE=0, ROTATE, SPAWN, ELECTROCUTE} // TODO: delete VSPAWN
 public enum DRAG {NONE, UNIT, SUIT} // what are we dragging?
-public enum FUNCTION { SKIP, RELOAD, WIN, PREVIOUS }
+public enum FUNCTION { SKIP, RELOAD, WIN, FAIL, PREVIOUS }
 
 public class Globals {
   public const float DEFAULT_MOVE_SPEED = 1.8f;

@@ -91,6 +91,7 @@ public class LevelTransition : MonoBehaviour
   void TransitionLevel(FUNCTION function) {
     switch (function) {
       case FUNCTION.RELOAD:
+      case FUNCTION.FAIL:
         GameManager.instance.ReloadLevel();
         break;
       case FUNCTION.WIN:
@@ -114,6 +115,7 @@ public class LevelTransition : MonoBehaviour
       case FUNCTION.RELOAD:
       case FUNCTION.SKIP:
       case FUNCTION.PREVIOUS:
+      case FUNCTION.FAIL:
         WipeWithBlack(function);
         break;
     }

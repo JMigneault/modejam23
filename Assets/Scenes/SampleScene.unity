@@ -682,7 +682,8 @@ MonoBehaviour:
   magnetize: {fileID: 8300000, guid: c6e87f962e236f5409d867168942638c, type: 3}
   electrocute: {fileID: 8300000, guid: c6d6b8dd3e5a8b8489d35a699a965bd8, type: 3}
   win: {fileID: 8300000, guid: 893f4d2ab3a38c9419934351935a6c4f, type: 3}
-  reload: {fileID: 0}
+  fail: {fileID: 8300000, guid: d19578f636910ba479dc552b5357bb3b, type: 3}
+  reload: {fileID: 8300000, guid: f7d1629a6a567624490d9b3306691e9f, type: 3}
   previous: {fileID: 8300000, guid: f7d1629a6a567624490d9b3306691e9f, type: 3}
   skip: {fileID: 8300000, guid: f7d1629a6a567624490d9b3306691e9f, type: 3}
 --- !u!1 &441361788

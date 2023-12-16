@@ -19,6 +19,7 @@ public class SoundManager : MonoBehaviour
   public AudioClip electrocute = null;
 
   public AudioClip win = null;
+  public AudioClip fail = null;
   public AudioClip reload = null;
   public AudioClip previous = null;
   public AudioClip skip = null;
@@ -45,6 +46,9 @@ public class SoundManager : MonoBehaviour
     switch (f) {
       case FUNCTION.WIN:
         soundSource.clip = win;
+        break;
+      case FUNCTION.FAIL:
+        soundSource.clip = fail;
         break;
       case FUNCTION.RELOAD:
         soundSource.clip = reload;

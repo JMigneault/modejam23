@@ -29,7 +29,7 @@ public class GameManager : MonoBehaviour
   void Update() {
     if (currentLvl != null && currentLvl.readyToDie) {
       currentLvl.readyToDie = false;
-      LevelTransition.instance.DoFunction( currentLvl.failed ? FUNCTION.RELOAD : FUNCTION.WIN );
+      LevelTransition.instance.DoFunction( currentLvl.failed ? FUNCTION.FAIL : FUNCTION.WIN );
     }
   }
 
